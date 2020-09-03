@@ -3,6 +3,20 @@ import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
 
+// 导入全局样式表
+import './assets/css/global.css'
+
+import axios from 'axios'
+//配置请求路径
+axios.defaults.baseURL = ''
+//设置拦截器
+axios.interceptors.request.use(config =>{
+  console.log(config)
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  //最后必须return config
+  return config
+
+})
 Vue.config.productionTip = false
 
 new Vue({
