@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
-import Welcom from '../views/Welcom.vue'
+import Welcome from '../views/Welcome.vue'
 import Users from '../components/user/Users.vue'
 import Resign from '../components/user/Resign.vue'
 import Rights from '../components/user/Rights.vue'
@@ -25,18 +25,17 @@ import Shops from '../components/order/shop/Shops.vue'
 import ShopSave from '../components/order/shop/ShopSave.vue'
 import IP from '../components/network/IP.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {path: '/', redirect: '/login'},
-  {path: '/login', component: Login 
-  },
+  {path: '/login', component: Login},
   {
     path: '/home',
     component: Home,
-    redirect: '/welcom',
+    redirect: '/welcome',
     children:[
-      {path:'/welcom',component:Welcom},
+      {path:'/welcome',component:Welcome},
       {path:'/user/list',component:Users},
       {path:'/user/resign',component:Resign},
       {path:'/user/rights',component:Rights},
@@ -60,11 +59,14 @@ const routes = [
       {path:'/network/ip',component:IP}
     ]
   }
-]
+];
 
+//创建路由
 const router = new VueRouter({
-  routes
-})
+  routes,
+  //路径不带#符号
+  mode: 'history'
+});
 //挂载路由导航守卫
 // router.beforeEach((to, from, next) => {
 //   // to 代表将要访问的路径
@@ -77,4 +79,5 @@ const router = new VueRouter({
 //   next()
 // })
 
-export default router
+//暴露路由
+export default router;
