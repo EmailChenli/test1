@@ -6,9 +6,11 @@ import Welcom from '../views/Welcom.vue'
 import Users from '../components/user/Users.vue'
 import Resign from '../components/user/Resign.vue'
 import Rights from '../components/user/Rights.vue'
-import MeetingHistory from '../components/meeting/MeetingHistory.vue'
+import MeetingHistory from '../components/meeting/history/MeetingHistory.vue'
+import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTimes.vue'
 import MeetingRooms from '../components/meeting/MeetingRooms.vue'
-import Apply from '../components/meeting/Apply.vue'
+import Approved from '../components/meeting/apply/Approved.vue'
+import NotApproved from '../components/meeting/apply/NotApproved.vue'
 import Reserve from '../components/meeting/Reserve.vue'
 import Books from '../components/property/book/Books.vue'
 import BookHistory from '../components/property/book/BookHistory.vue'
@@ -29,7 +31,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {path: '/', redirect: '/login'},
-  {path: '/login', component: Login 
+  {path: '/login', component: Login
   },
   {
     path: '/home',
@@ -41,8 +43,10 @@ const routes = [
       {path:'/user/resign',component:Resign},
       {path:'/user/rights',component:Rights},
       {path:'/meeting/list',component:MeetingRooms},
-      {path:'/meeting/history',component:MeetingHistory},
-      {path:'/meeting/apply',component:Apply},
+      {path:'/meeting/history/reserve',component:MeetingHistory},
+      {path:'/meeting/history/reservetimes',component:MeetingHistoryTimes},
+      {path:'/meeting/apply/approved',component:Approved},
+      {path:'/meeting/apply/notapproved',component:NotApproved},
       {path:'/meeting/reserve',component:Reserve},
       {path:'/property/book/list',component:Books},
       {path:'/property/book/history',component:BookHistory},
