@@ -219,41 +219,41 @@ export default {
               ],
             },
             {
-              path: "/order/food",
+              path: "/order/foodType",
               name: "食品分类管理",
               icon: "el-icon-menu",
               children: [
                 {
-                  path: "/order/food/list",
+                  path: "/order/foodType/list",
                   name: "食品分类列表",
                   icon: "el-icon-menu",
                 },
                 {
-                  path: "/order/food/add",
+                  path: "/order/foodType/add",
                   name: "添加食品分类",
                   icon: "el-icon-menu",
                 },
               ],
             },
             {
-              path: "/order/foodType",
+              path: "/order/food",
               name: "食品管理",
               icon: "el-icon-menu",
               children: [
                 {
-                  path: "/order/foodType/list",
+                  path: "/order/food/list",
                   name: "食品列表",
                   icon: "el-icon-menu",
                 },
                 {
-                  path: "/order/foodType/add",
+                  path: "/order/food/add",
                   name: "添加食品",
                   icon: "el-icon-menu",
                 },
               ],
             },
             {
-              path: "/order/order",
+              path: "/order/orders",
               name: "订单列表",
               icon: "el-icon-menu",
             },
