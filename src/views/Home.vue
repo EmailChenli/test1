@@ -132,6 +132,18 @@ export default {
               path: "/meeting/apply",
               name: "申请列表",
               icon: "el-icon-menu",
+              children: [
+                {
+                  path: "/meeting/apply/approved",
+                  name: "已审批",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/meeting/apply/notapproved",
+                  name: "未审批",
+                  icon: "el-icon-menu",
+                }
+              ]
             },
             {
               path: "/meeting/reserve",
@@ -139,9 +151,21 @@ export default {
               icon: "el-icon-menu",
             },
             {
-              path: "/meeting/list/history",
+              path: "/meeting/history",
               name: "历史记录",
               icon: "el-icon-menu",
+              children: [
+                {
+                  path: "/meeting/history/reserve",
+                  name: "预订记录",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/meeting/history/reservetimes",
+                  name: "预订次数统计",
+                  icon: "el-icon-menu",
+                }
+              ]
             },
           ],
         },
