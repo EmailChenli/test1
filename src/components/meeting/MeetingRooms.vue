@@ -57,7 +57,7 @@
     methods: {
       getTableInfo(){
         let that = this;
-        axios.get('http://localhost:8080/meetingroom/find/180201', {
+        axios.get('', {
         }).then(function(response){
           console.log(response);
           console.log(response.data.data.meetingRoom);
