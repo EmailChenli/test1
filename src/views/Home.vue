@@ -2,21 +2,18 @@
   <el-container class="home-container">
     <!-- 头部区域 -->
     <el-header>
-      <div>
-        <img style="width: 50px;
-        height: 50px;
-        left:10px" src="../assets/img/east.png" alt />
-        <span>东信门户管理系统</span>
-      </div>
+      <!--公司logo-->
+      <div class="company-logo"></div>
+      <!-- 项目名 -->
+      <div class="project-name">Eastcom - Ripple</div>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-        <img src="../assets/logo.png" class="user-avatar">
-        <i class="el-icon-caret-bottom"/>
-      </div>
+          <img src="../assets/logo.png" class="user-avatar"  alt="head-image" />
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>设置</el-dropdown-item>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="loginout">退出</span>
+            <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -25,7 +22,9 @@
     <el-container>
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
-        <div class="toggle-button" @click="toggleCollapse">|||</div>
+        <div class="toggle-button" @click="toggleCollapse">
+          <i :class="toggleButtonIcon" style="font-size: 21px; line-height: 43px;"></i>
+        </div>
         <el-menu
           background-color="#333744"
           style="text-algin:left"
@@ -38,7 +37,7 @@
           :default-active="activePath"
         >
           <!--一级菜单-->
-          <template v-for="item in menulist">
+          <template v-for="item in menuList">
             <el-submenu
               v-if="item.children && item.children.length"
               :index="item.path"
@@ -96,7 +95,7 @@ export default {
   data() {
     return {
       //左侧菜单数据
-      menulist: [
+      menuList: [
         {
           path: "/user",
           name: "用户管理",
@@ -187,7 +186,7 @@ export default {
                 },
                 {
                   path: "/property/computer/rent",
-                  name: "放还管理",
+                  name: "发还管理",
                   icon: "el-icon-menu",
                 },
                 {
@@ -297,10 +296,12 @@ export default {
           ],
         },
       ],
-      //是否被折叠
+      //是否被折叠,true则折叠，false则打开
       isCollapse: false,
       // 被激活的连接地址
       activePath: "",
+      //切换按钮的图标
+      toggleButtonIcon:"el-icon-s-fold"
     };
   },
   created() {
@@ -308,13 +309,16 @@ export default {
   },
   methods: {
     // 退出登录
-    loginout() {
+    logout() {
       window.sessionStorage.clear();
       this.$router.push("/login");
     },
     //点击按钮，切换菜单的折叠与展开
     toggleCollapse() {
       this.isCollapse = !this.isCollapse;
+      console.log(this.isCollapse);
+      //切换图标
+      this.toggleButtonIcon = this.isCollapse?"el-icon-s-unfold":"el-icon-s-fold"
     },
     // 保存连接的激活状态
     saveNavState(activePath) {
@@ -331,7 +335,7 @@ export default {
 }
 
 .el-header {
-  background-color: #373d41;
+  background-color: #23262E;
   display: flex;
   justify-content: space-between;
   padding-left: 10px;
@@ -346,7 +350,31 @@ export default {
     }
   }
 }
+/*公司logo*/
+.company-logo{
+  position: absolute!important;
+  top: 12px;
+  left: 68px;
+  width: 35px;
+  height: 35px;
+  /* 给div设置背景 */
+  background: url('../assets/img/east.png') no-repeat center 0;
+  /* 让图片自适应 */
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+}
 
+/*项目名*/
+.project-name{
+  position: absolute!important;
+  vertical-align: middle;
+  line-height: 60px;
+  font-size: 20px;
+  left: 120px;
+  color: #FFFFFF;
+  top: 0;
+}
 .el-aside {
   background-color: #333744;
   .el-menu {
@@ -385,7 +413,7 @@ export default {
         width: 45px;
         height: 45px;
         background-color: #fff;
-        border-radius: 50px;
+        border-radius: 24px;
       }
       .el-icon-caret-bottom {
         position: absolute;
