@@ -95,26 +95,79 @@ export default {
   data() {
     return {
       //左侧菜单数据
+
+      //员工管理系统
       menuList: [
         {
-          path: "/user",
-          name: "用户管理",
+          path: "/employee",
+          name: "信息管理",
           icon: "el-icon-s-custom",
           children: [
             {
-              path: "/user/list",
-              name: "用户列表",
+              path: "/employee/company",
+              name: "公司管理",
               icon: "el-icon-menu",
+              children: [
+                {
+                  path: "/employee/company/deparment",
+                  name: "部门管理",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/company/job",
+                  name: "职位管理",
+                  icon: "el-icon-menu",
+                }
+              ]
             },
             {
-              path: "/user/resign",
-              name: "离职信息",
+              path: "/employee/list",
+              name: "员工管理",
               icon: "el-icon-menu",
+              children: [
+                {
+                  path: "/employee/list/deparment",
+                  name: "入职员工",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/list/account",
+                  name: "账号信息",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/list/job",
+                  name: "分配信息",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/list/employeedimission",
+                  name: "离职信息",
+                  icon: "el-icon-menu",
+                }
+              ]
             },
             {
-              path: "/user/rights",
-              name: "权限管理",
+              path: "/employee/system",
+              name: "系统管理",
               icon: "el-icon-menu",
+              children: [
+                {
+                  path: "/employee/system/role",
+                  name: "权限管理",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/system/systemaccount",
+                  name: "系统账号信息",
+                  icon: "el-icon-menu",
+                },
+                {
+                  path: "/employee/system/updatepassword",
+                  name: "修改密码",
+                  icon: "el-icon-menu",
+                }
+              ]
             },
           ],
         },

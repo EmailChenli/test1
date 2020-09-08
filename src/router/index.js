@@ -3,9 +3,10 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Welcome from '../views/Welcome.vue'
-import Users from '../components/user/Users.vue'
-import Resign from '../components/user/Resign.vue'
-import Rights from '../components/user/Rights.vue'
+// 员工管理
+import Department from '../components/employee/components/Department'
+import Job from '../components/employee/components/Job'
+//会议管理
 import MeetingHistory from '../components/meeting/history/MeetingHistory.vue'
 import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTimes.vue'
 import MeetingRooms from '../components/meeting/MeetingRooms.vue'
@@ -38,9 +39,10 @@ const routes = [
     redirect: '/welcome',
     children:[
       {path:'/welcome',component:Welcome},
-      {path:'/user/list',component:Users},
-      {path:'/user/resign',component:Resign},
-      {path:'/user/rights',component:Rights},
+      //员工管理
+      {path:'/employee/company/deparment',component:Department},
+      {path:'/employee/company/job',component:Job},
+      // {path:'/employee/company/deparment',component:Rights},
       {path:'/meeting/list',component:MeetingRooms},
       {path:'/meeting/history/reserve',component:MeetingHistory},
       {path:'/meeting/history/reservetimes',component:MeetingHistoryTimes},
