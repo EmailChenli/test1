@@ -1,35 +1,35 @@
 <template>
   <div>
-
+    <!--面包屑导航区域-->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>会议室管理</el-breadcrumb-item>
+      <el-breadcrumb-item>会议室列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-row :gutter="20">
         <el-col :span="7">
           <el-input placeholder="请输入会议室号" v-model="keyWord" clearable @clear="getRoomList">
-            <el-button slot="append" icon="el-icon-search" @click="selectRoom"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="selectRoom()"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
           <el-button type="primary" @click="addDialogVisible = true">添加会议室</el-button>
         </el-col>
-        <el-col :span="4">
-          <el-button type="primary" @click="getTableInfo">查找</el-button>
-        </el-col>
       </el-row>
 
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="roomList" border style="width: 100%">
         <el-table-column prop="roomId" label="会议室编号" width="100"></el-table-column>
         <el-table-column prop="roomName" label="名称"></el-table-column>
         <el-table-column prop="roomSize" label="可容纳人数" width="100"></el-table-column>
-        <el-table-column prop="roomStatus" label="状态" width="80"></el-table-column>
-        <el-table-column prop="description" label="详情"></el-table-column>
+        <el-table-column prop="description" label="详情（设备）"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="最近修改时间"></el-table-column>
         <el-table-column prop="updateTime" label="最近修改时间"></el-table-column>
         <el-table-column label="操作" width="180px">
           <template slot-scope="scope">
             <!-- 修改按钮 -->
             <el-tooltip class="item" effect="dark" content="修改会议室信息" placement="top" :enterable="false">
-              <el-button size="mini" type="primary" icon="el-icon-edit" @click="showEditDialog(scope.row.roomId)"></el-button>
+              <el-button size="mini" type="primary" icon="el-icon-edit" @click="showEditDialog(scope.row)"></el-button>
             </el-tooltip>
             <!-- 删除按钮 -->
             <el-tooltip class="item" effect="dark" content="删除会议室" placement="top" :enterable="false">
@@ -38,50 +38,246 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.page"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="queryInfo.rows"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
 
     </el-card>
+
+    <!-- 添加会议室对话框 -->
+    <el-dialog
+      title="添加会议室"
+      :visible.sync="addDialogVisible"
+      width="50%"
+      @close="addDialogClosed">
+      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+        <el-form-item label="会议室编号" prop="roomId">
+          <el-input v-model="addForm.roomId"></el-input>
+        </el-form-item>
+        <el-form-item label="会议室名称" prop="roomName">
+          <el-input v-model="addForm.roomName"></el-input>
+        </el-form-item>
+        <el-form-item label="可容纳人数" prop="roomSize">
+          <el-input type="number" oninput="if(value<1)value=1" v-model="addForm.roomSize"></el-input>
+        </el-form-item>
+        <el-form-item label="详情（设备）" prop="description">
+          <el-input v-model="addForm.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addRoom">确 定</el-button>
+        </span>
+    </el-dialog>
+
+    <!-- 修改会议室信息对话框 -->
+    <el-dialog
+      title="修改会议室信息"
+      :visible.sync="editDialogVisible"
+      width="50%"
+      @close="editDialogClosed">
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+        <el-form-item label="会议室编号" prop="roomId">
+          <el-input v-model="editForm.roomId" readonly="true"></el-input>
+        </el-form-item>
+        <el-form-item label="会议室名称" prop="roomName">
+          <el-input v-model="editForm.roomName"></el-input>
+        </el-form-item>
+        <el-form-item label="可容纳人数" prop="roomSize">
+          <el-input type="number" oninput="if(value<1)value=1" v-model="editForm.roomSize"></el-input>
+        </el-form-item>
+        <el-form-item label="详情（设备）" prop="description">
+          <el-input v-model="editForm.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+            <el-button @click="editDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="eidtRoom">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 <script>
   import axios from 'axios'
   export default {
     data() {
-      return {
-        tableData : {}
-      }
-    }/*,
-    created(){
-      this.getTableInfo();
-    }*/,
-    methods: {
-      getTableInfo(){
-        let that = this;
-        axios.get('', {
-        }).then(function(response){
-          console.log(response);
-          console.log(response.data.data.meetingRoom);
-          console.log(that.tableData);
-          that.tableData = response.data.data.meetingRoom;
-          console.log(that.tableData);
-
-          /*console.log(response.data.data.meetingRoom);
-          console.log(that.tableData);
-          let table = [];
-          for(let i in response.data.data.meetingRoom){
-            table.push(response.data.data.meetingRoom[i]);
+        return {
+          queryInfo: {
+            page: 1,
+            rows: 5
+          },
+          roomList: [],
+          total: 0,
+          keyWord: '',
+          addDialogVisible: false,
+          editDialogVisible: false,
+          addForm: {
+            roomId: '',
+            roomName:'',
+            roomSize: 1,
+            description: ''
+          },
+          addFormRules: {
+            roomId: [
+              { required: true, message: '请输入会议室编号', trigger: 'blur' }
+            ],
+            roomName: [
+              {required: true, message: '请输入会议室名称', trigger: 'blur'}
+            ],
+            roomSize: [
+              { required: true, message: '请输入可容纳人数', trigger: 'blur' }
+            ]
+          },
+          editForm: {
+            roomId: '',
+            roomName:'',
+            roomSize: 1,
+            description: ''
+          },
+          editFormRules: {
+            roomId: [
+              { required: true, message: '请输入会议室编号', trigger: 'blur' },
+            ],
+            roomName: [
+              {required: true, message: '请输入会议室名称', trigger: 'blur'}
+            ],
+            roomSize: [
+              { required: true, message: '请输入可容纳人数', trigger: 'blur' }
+            ]
           }
-          that.tableData = table;
-          console.log(that.tableData);*/
-        }).catch(function(response){
-          console.log(response);
+        }
+    },
+    created(){
+      this.getRoomList();
+    },
+    methods: {
+      getRoomList () {
+        axios.get('http://localhost:8080/meetingroom/findAll', { params: this.queryInfo })
+          .then((response) => {
+            if(response.data.code == 400){
+              this.$message.error("获取数据失败")
+            }else{
+              this.roomList = response.data.data.rows
+              this.total = response.data.data.count
+            }
+          }).catch((response) =>{
+            console.log(response)
         })
       },
-      showEditDialog(){
-
+      // 监听pageSize改变的事情
+      handleSizeChange (newSize) {
+        this.queryInfo.rows = newSize
+        if(this.total == 1) return
+        this.getRoomList()
       },
-      removeRoomById(){
+      // 监听页码值改变的事件
+      handleCurrentChange (newPage) {
+        this.queryInfo.page = newPage
+        if(this.total == 1) return
+        this.getRoomList()
+      },
+      selectRoom () {
+        axios.get('http://localhost:8080/meetingroom/find/' + this.keyWord)
+          .then((response) => {
+            if(response.data.code == 400){
+              return this.$message.error("查询失败")
+            }if(response.data.data.meetingRoom == null){
+              return this.$message.error("会议室不存在")
+            }
+            let arr = []
+            arr[0] = (response.data.data.meetingRoom)
+            this.roomList = arr
+            this.total = 1
+          }).catch((response) =>{
+          console.log(response)
+        })
+      },
+      addDialogClosed () {
+        this.$refs.addFormRef.resetFields()
+      },
+      editDialogClosed () {
+        this.$refs.editFormRef.resetFields()
+      },
+      addRoom () {
+        this.$refs.addFormRef.validate(async valid => {
+          if (!valid) return
+          axios.post('http://localhost:8080/meetingroom/save', {
+            roomId: this.addForm.roomId,
+            roomName: this.addForm.roomName,
+            roomSize: this.addForm.roomSize,
+            description: this.addForm.description })
+            .then((response) => {
+              if(response.data.code == 400){
+                this.$message.error("添加失败："+ response.data.message)
+              }else{
+                this.$message.success("添加成功")
+                this.addDialogVisible = false
+                this.getRoomList()
+              }
+            }).catch((response) =>{
+              console.log(response)
+              this.$message.error("添加错误")
+          })
+        })
+      },
+      showEditDialog(row){
+        this.editForm.roomId = row.roomId
+        this.editForm.roomName = row.roomName
+        this.editForm.roomSize = row.roomSize
+        this.editForm.description = row.description
+        this.editDialogVisible = true
+      },
+      eidtRoom () {
+        this.$refs.editFormRef.validate(async valid => {
+          if (!valid) return
+          axios.post('http://localhost:8080/meetingroom/update', {
+            roomId: this.editForm.roomId,
+            roomName: this.editForm.roomName,
+            roomSize: this.editForm.roomSize,
+            description: this.editForm.description })
+            .then((response) => {
+              if(response.data.code == 400){
+                return this.$message.error("修改失败："+ response.data.message)
+              }
+                this.$message.success("修改成功")
+                this.editDialogVisible = false
+                this.getRoomList()
 
+            }).catch((response) =>{
+            console.log(response)
+            this.$message.error("修改失败")
+          })
+        })
+      },
+      async removeRoomById(id){
+        const confirmResult = await this.$confirm('此操作将永久删除该会议室, 是否继续?',
+          '提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).catch(err => err)
+        if (confirmResult !== 'confirm') {
+          return this.$message.info('已取消删除')
+        }
+        axios.get('http://localhost:8080/meetingroom/delete/' + id).then((response) =>{
+          if(response.data.code == 400){
+            return this.$message.error("删除失败：" + response.message)
+          }
+          this.$message.success("删除会议室成功")
+          this.queryInfo.page = 1
+          this.getRoomList()
+        }).catch((response) =>{
+          console.log(response)
+          this.$message.error("删除失败")
+        })
       }
     }
   }

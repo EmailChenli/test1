@@ -146,18 +146,13 @@ export default {
               ]
             },
             {
-              path: "/meeting/reserve",
-              name: "预定记录",
-              icon: "el-icon-menu",
-            },
-            {
               path: "/meeting/history",
               name: "历史记录",
               icon: "el-icon-menu",
               children: [
                 {
                   path: "/meeting/history/reserve",
-                  name: "预订记录",
+                  name: "历史预订记录",
                   icon: "el-icon-menu",
                 },
                 {

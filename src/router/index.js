@@ -11,7 +11,6 @@ import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTim
 import MeetingRooms from '../components/meeting/MeetingRooms.vue'
 import Approved from '../components/meeting/apply/Approved.vue'
 import NotApproved from '../components/meeting/apply/NotApproved.vue'
-import Reserve from '../components/meeting/Reserve.vue'
 import Books from '../components/property/book/Books.vue'
 import BookHistory from '../components/property/book/BookHistory.vue'
 import BookRent from '../components/property/book/BookRent.vue'
@@ -46,7 +45,6 @@ const routes = [
       {path:'/meeting/history/reservetimes',component:MeetingHistoryTimes},
       {path:'/meeting/apply/approved',component:Approved},
       {path:'/meeting/apply/notapproved',component:NotApproved},
-      {path:'/meeting/reserve',component:Reserve},
       {path:'/property/book/list',component:Books},
       {path:'/property/book/history',component:BookHistory},
       {path:'/property/book/rent',component:BookRent},
