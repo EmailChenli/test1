@@ -28,13 +28,13 @@
 
       <!-- 表格 -->
       <el-table :data="list" border style="width: 100%;" :header-cell-style="headerCellStyle" :cell-style="cellStyle">
-        <el-table-column prop="comSn" label="电脑编号" width="175" :resizable="false">
+        <el-table-column prop="comSn" label="电脑SN码" width="175" :resizable="false">
         </el-table-column>
-        <el-table-column prop="comNum" label="电脑编号" :resizable="false">
+        <el-table-column prop="assetNum" label="资产编号" :resizable="false">
         </el-table-column>
-        <el-table-column prop="comBrand" label="电脑品牌" :resizable="false">
+        <el-table-column prop="comType" label="电脑类型" :resizable="false">
         </el-table-column>
-        <el-table-column prop="comModel" label="电脑型号" :resizable="false">
+        <el-table-column prop="comName" label="电脑名称" :resizable="false">
         </el-table-column>
         <el-table-column prop="comCpu" label="电脑处理器" :resizable="false">
         </el-table-column>
@@ -116,9 +116,9 @@
         this.page=page;
         this.list= [{
           comSn: 'sijij',
-          comNum: '东信123',
-          comBrand: '戴尔',
-          comModel: '12312',
+          assetNum: '东信123',
+          comType: '笔记本',
+          comName: '戴尔灵越5000',
           comCpu: 'i7',
           comMemory: '16G',
           employeeName: 'bb'!= null?'小白':'无',
@@ -150,28 +150,28 @@
         this.getList();
       },
       // 删除商家的方法
-      async removeDataById(sid) {
-        const comfirmResult = this.$confirm(
-          "此操作将永久删除该商家, 是否继续?",
-          "提示",
-          {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-          }
-        ).catch((err) => err);
-        if (confirmRusult !== "confirm") {
-          return this.$message.info("已取消删除");
-        }
-        const { data: res } = await this.$http.delete(
-          "/orderingSystem/shop/deleteShop/" + id
-        );
-        if (res.meta.status !== 200) {
-          return this.$message.error("删除用户失败！");
-        }
-        this.$message.success("删除用户成功！");
-        this.getList();
-      },
+      // async removeDataById(sid) {
+      //   const comfirmResult = this.$confirm(
+      //     "此操作将永久删除该商家, 是否继续?",
+      //     "提示",
+      //     {
+      //       confirmButtonText: "确定",
+      //       cancelButtonText: "取消",
+      //       type: "warning",
+      //     }
+      //   ).catch((err) => err);
+      //   if (confirmRusult !== "confirm") {
+      //     return this.$message.info("已取消删除");
+      //   }
+      //   const { data: res } = await this.$http.delete(
+      //     "/orderingSystem/shop/deleteShop/" + id
+      //   );
+      //   if (res.meta.status !== 200) {
+      //     return this.$message.error("删除用户失败！");
+      //   }
+      //   this.$message.success("删除用户成功！");
+      //   this.getList();
+      // },
       //修改表头样式
       headerCellStyle() {
         return 'text-align: center; font-weight: 500; font-size: 14px';
