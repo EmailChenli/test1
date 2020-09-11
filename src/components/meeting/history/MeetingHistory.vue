@@ -11,9 +11,12 @@
     <el-card>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="getRecordList">
-            <el-button slot="append" icon="el-icon-search" @click="SearchRecord()"></el-button>
+          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="clear()">
+            <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button icon="el-icon-refresh" @click="refreshRecordList()"></el-button>
         </el-col>
       </el-row>
 
@@ -31,11 +34,11 @@
               </el-row>
               <el-row>
                 <el-col :span="12"><el-form-item label="会议室名称" label-width="50%"><span>{{ props.row.roomName }}</span></el-form-item></el-col>
-                <el-col :span="12"><el-form-item label="申请账号" label-width="50%"><span>{{ props.row.userName }}</span></el-form-item></el-col>
+                <el-col :span="12"><el-form-item label="参会人数" label-width="50%"><span>{{ props.row.meetingNumber }}</span></el-form-item></el-col>
               </el-row>
               <el-row>
+                <el-col :span="12"><el-form-item label="申请账号" label-width="50%"><span>{{ props.row.userName }}</span></el-form-item></el-col>
                 <el-col :span="12"><el-form-item label="申请人" label-width="50%"><span>{{ props.row.realname }}</span></el-form-item></el-col>
-                <el-col :span="12"><el-form-item label="参会人数" label-width="50%"><span>{{ props.row.meetingNumber }}</span></el-form-item></el-col>
               </el-row>
               <el-row>
                 <el-col :span="12"><el-form-item label="开始时间" label-width="50%"><span>{{ props.row.startTime }}</span></el-form-item></el-col>
@@ -102,12 +105,14 @@
     },
     methods: {
       getRecordList() {
-        axios.get('http://localhost:8080/meetingrecord/findAll', {params: this.queryInfo})
-          .then((response) => {
+        axios.post('http://localhost:8080/meetingrecord/findAll', {
+          page: this.queryInfo.page,
+          rows: this.queryInfo.rows
+        }).then((response) => {
             if (response.data.code == 400) {
-              this.$message.error("获取数据失败")
+              this.$message.error("获取数据失败："+response.data.message)
             } else {
-              this.recordList = response.data.data.rows
+              this.recordList = response.data.data.list
               this.total = response.data.data.count
             }
           }).catch((response) => {
@@ -120,7 +125,7 @@
         if (this.keyWord == ''){
           this.getRecordList()
         }else{
-          this.SearchRecord()
+          this.searchRecord()
         }
       },
       // 监听页码值改变的事件
@@ -129,19 +134,34 @@
         if (this.keyWord == ''){
           this.getRecordList()
         }else{
-          this.SearchRecord()
+          this.searchRecord()
         }
       },
-      SearchRecord(){
-        axios.post('http://localhost:8080/meetingrecord/SearchRecordByUserName', {
+      clear(){
+        this.queryInfo.page = 1
+        this.queryInfo.rows = 5
+        this.getRecordList()
+      },
+      doSearch(){
+        if (this.keyWord == ''){
+          this.$message.info("请输入账号进行搜索")
+          return
+        }else{
+          this.queryInfo.page = 1
+          this.queryInfo.rows = 5
+          this.searchRecord()
+        }
+      },
+      searchRecord(){
+        axios.post('http://localhost:8080/meetingrecord/searchRecordByUserName', {
           userName: this.keyWord,
           page: this.queryInfo.page,
           rows: this.queryInfo.rows
         }).then((response) => {
             if (response.data.code == 400) {
-              this.$message.error("查询失败：" + response.data.message())
+              this.$message.error("查询失败：" + response.data.message)
             } else {
-              this.recordList = response.data.data.rows
+              this.recordList = response.data.data.list
               this.total = response.data.data.count
             }
           }).catch((response) => {
@@ -161,19 +181,28 @@
         }
         axios.get('http://localhost:8080/meetingrecord/delete/' + id).then((response) =>{
           if(response.data.code == 400){
-            return this.$message.error("删除失败：" + response.message)
+            return this.$message.error("删除失败：" + response.data.message)
           }
           this.$message.success("删除记录成功")
           this.queryInfo.page = 1
           if (this.keyWord == ''){
             this.getRecordList()
           }else{
-            this.SearchRecord()
+            this.searchRecord()
           }
         }).catch((response) =>{
           console.log(response)
           this.$message.error("删除失败")
         })
+      },
+      refreshRecordList(){
+        this.queryInfo.page = 1
+        this.queryInfo.rows = 5
+        if (this.keyWord == ''){
+          this.getRecordList()
+        }else{
+          this.searchRecord()
+        }
       }
     }
   }

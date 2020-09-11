@@ -57,7 +57,7 @@
             if (response.data.code == 400) {
               this.$message.error("获取数据失败")
             } else {
-              this.timesList = response.data.data.rows
+              this.timesList = response.data.data.list
               this.total = response.data.data.count
             }
           }).catch((response) => {
