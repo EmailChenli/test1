@@ -1,42 +1,51 @@
 import request from '../utils/request'
 
-export function jobfindall(){
+export function jobfindall(page){
     return request({
         url: 'http://localhost:8003/sys/job/findall',
-        method: 'get'
+        method: 'post',
+        data:
+            page
     })
 }
 
-export function jobfindbyid(job_id){
+export function jobfindbyid(jobId){
     return request({
-        url: 'http://localhost:8003/sys/job/findbyid/'+job_id,
+        url: 'http://localhost:8003/sys/job/findbyid/'+jobId,
         method: 'get'
     })
 }
 
-export function jobupdate(job){
+export function jobupdate(jobInfo){
     return request({
         url: 'http://localhost:8003/sys/job/update',
         method: 'post',
         data:
-            job
+            jobInfo
     })
 }
 
-export function jobadd(job){
+export function jobadd(jobInfo){
     return request({
         url: 'http://localhost:8003/sys/job/add',
         method: 'post',
         data:
-            job
+            jobInfo
     })
 }
 
-export function jobfindlike(job){
+export function jobfindlike(jobInfo){
     return request({
         url: 'http://localhost:8003/sys/job/findlike',
         method: 'post',
         data:
-            job
+            jobInfo
+    })
+}
+
+export function jobdelete(jobId){
+    return request({
+        url: 'http://localhost:8003/sys/job/delete'+jobId,
+        method: 'get',
     })
 }

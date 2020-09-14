@@ -126,17 +126,17 @@ export default {
               icon: "el-icon-menu",
               children: [
                 {
-                  path: "/employee/list/deparment",
+                  path: "/employee/list/employee",
                   name: "入职员工",
                   icon: "el-icon-menu",
                 },
                 {
-                  path: "/employee/list/account",
+                  path: "/employee/list/employeeaccount",
                   name: "账号信息",
                   icon: "el-icon-menu",
                 },
                 {
-                  path: "/employee/list/job",
+                  path: "/employee/list/employeedistribute",
                   name: "分配信息",
                   icon: "el-icon-menu",
                 },

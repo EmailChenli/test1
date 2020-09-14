@@ -6,6 +6,15 @@ import Welcome from '../views/Welcome.vue'
 // 员工管理
 import Department from '../components/employee/components/Department'
 import Job from '../components/employee/components/Job'
+
+import Employee from '../components/employee/components/Employee'
+import EmployeeAccount from '../components/employee/components/EmployeeAccount'
+import EmployeeDistribute from '../components/employee/components/EmployeeDistribute'
+import EmployeeDimission from '../components/employee/components/EmployeeDimission'
+
+import SystemRole from '../components/employee/components/SystemRole'
+import SystemChangePass from '../components/employee/components/SystemChangePass'
+import SystemAccount from '../components/employee/components/SystemAccount'
 //会议管理
 import MeetingHistory from '../components/meeting/history/MeetingHistory.vue'
 import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTimes.vue'
@@ -41,7 +50,16 @@ const routes = [
       //员工管理
       {path:'/employee/company/deparment',component:Department},
       {path:'/employee/company/job',component:Job},
-      // {path:'/employee/company/deparment',component:Rights},
+
+      {path:'/employee/list/employee',component:Employee},
+      {path:'/employee/list/employeeaccount',component:EmployeeAccount},
+      {path:'/employee/list/employeedistribute',component:EmployeeDistribute},
+      {path:'/employee/list/employeedimission',component:EmployeeDimission},
+
+      {path:'/employee/system/role',component:SystemRole},
+      {path:'/employee/system/systemaccount',component:SystemAccount},
+      {path:'/employee/system/updatepassword',component:SystemChangePass},
+      //会议室管理
       {path:'/meeting/list',component:MeetingRooms},
       {path:'/meeting/history/reserve',component:MeetingHistory},
       {path:'/meeting/history/reservetimes',component:MeetingHistoryTimes},

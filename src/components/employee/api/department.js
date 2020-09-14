@@ -1,15 +1,24 @@
 import request from '../utils/request'
 
-export function departmentfindall(){
+export function departmentfindall(page){
     return request({
         url: 'http://localhost:8003/sys/department/findall',
+        method: 'post',
+        data:
+            page
+    })
+}
+
+export function departmentfindbyid(departmentId){
+    return request({
+        url: 'http://localhost:8003/sys/department/findbyid/'+departmentId,
         method: 'get'
     })
 }
 
-export function departmentfindbyid(department_id){
+export function departmentdeletebyid(departmentId){
     return request({
-        url: 'http://localhost:8003/sys/department/findbyid/'+department_id,
+        url: 'http://localhost:8003/sys/department/delete/'+departmentId,
         method: 'get'
     })
 }
@@ -41,14 +50,6 @@ export function departmentfindlike(department){
     })
 }
 
-// export default{
-//     departmentfindbyid(department_id){
-//         return request({
-//             url: 'http://localhost:8888/sys/department/findbyid/'+department_id,
-//             method: 'get'
-//         });
-//     }
-// } 
 
 
 
