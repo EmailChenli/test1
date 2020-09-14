@@ -77,30 +77,22 @@
       border
       fit
       highlight-current-column>
+<el-table-column
+        label="序号"
+        width="200"
+        align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.$index + 1 }}</span>
+        </template>
+      </el-table-column>
 
-     <thead></thead>
-            <tbody>
-              <tr>
-                <td>日报类型</td>
-                <td>{{editForm.daily_type | filterType}}</td>
-              </tr>
-              <tr>
-                <td>开始时间</td>
-                <td>{{editForm.start_time  | formatTimer('hours')}}</td>
-              </tr>
-              <tr>
-                <td>结束时间</td>
-                <td>{{editForm.end_time | formatTimer('hours') }}</td>
-              </tr>
-              <tr>
-                <td>今日内容</td>
-                <td>{{editForm.content}}</td>
-              </tr>
-              <tr>
-                <td>计划</td>
-                <td>{{editForm.plan}}</td>
-              </tr>
-            </tbody>
+      <el-table-column prop="foodName" label="食品名称"  />
+
+      <el-table-column prop="price" label="食品价格" />
+
+      <el-table-column prop="count" label="食品数量" />
+
+      <el-table-column prop="subTotal" label="小计/元" />
     </el-table>
       </el-dialog>
 
