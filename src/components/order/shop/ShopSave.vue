@@ -1,12 +1,9 @@
 <template>
   <div class="app-container">
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商家管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商家列表</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-card>
+      <div slot="header" class="card-header-text">
+        <span>添加商家</span>
+      </div>
      <el-form label-width="120px">
       <el-form-item label="商家名称">
         <el-input v-model="shop.shopName"/>
@@ -162,6 +159,15 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+  }
+  .el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
   }
 </style>
 

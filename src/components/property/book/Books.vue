@@ -1,12 +1,9 @@
 <template>
   <div class="app-container">
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>资产管理</el-breadcrumb-item>
-      <el-breadcrumb-item>图书列表</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-card>
+      <div slot="header" class="card-header-text">
+        <span>图书信息列表</span>
+      </div>
       <!--查询表单-->
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="书名：">
@@ -120,3 +117,14 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
+  }
+</style>

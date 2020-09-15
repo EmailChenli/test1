@@ -1,13 +1,9 @@
 <template>
   <div class="app-container">
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>资产管理</el-breadcrumb-item>
-      <el-breadcrumb-item>电脑管理</el-breadcrumb-item>
-      <el-breadcrumb-item>电脑信息</el-breadcrumb-item>
-    </el-breadcrumb>
     <el-card>
+      <div slot="header" class="card-header-text">
+        <span>电脑信息列表</span>
+      </div>
       <!--查询表单-->
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item class="form-item-layout">
@@ -26,8 +22,9 @@
         </el-form-item>
       </el-form>
 
-      <!-- 表格 -->
+      <!-- 电脑信息列表 -->
       <el-table :data="list" border style="width: 100%;" :header-cell-style="headerCellStyle" :cell-style="cellStyle">
+        <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="comSn" label="电脑SN码" width="175" :resizable="false">
         </el-table-column>
         <el-table-column prop="assetNum" label="资产编号" :resizable="false">
@@ -48,24 +45,12 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-edit" style="font-size: 10px">修改</el-button>
             <el-button
-              type="danger"
-              size="mini"
-              icon="el-icon-delete"
-              style="margin-left: 3px; font-size: 10px"
-              @click="removeDataById(scope.row.sid)"
+              type="danger" size="mini"  icon="el-icon-delete" style="margin-left: 3px; font-size: 10px"
+               @click="removeDataById(scope.row.sid)"
             >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页 -->
-      <!-- <el-pagination
-        :current-page="page"
-        :page-size="limit"
-        :total="total"
-        style="padding: 30px 0; text-align: center;"
-        layout="total, prev, pager, next, jumper"
-        @current-change="getList"
-      />-->
       <!--分页区域-->
       <el-pagination
         @size-change="handleSizeChange"
@@ -81,11 +66,7 @@
 </template>
 <script>
   export default {
-    //写核心代码位置
-    // data:{
-    // },
     data() {
-      //定义变量和初始值
       return {
         page: 1, //当前页
         limit: 10, //每页记录数
@@ -103,14 +84,10 @@
       };
     },
     created() {
-      //页面渲染之前执行，一般调用methods定义的方法
-      //调用
-
       this.getList();
     },
     methods: {
-      //创建具体的方法，调用shop.js定义的方法
-      //商家列表的方法
+      //电脑信息列表
       async getList(page=1) {
         // console.log(this.searchStatus);
         this.page=page;
@@ -149,29 +126,6 @@
         this.limit = newPage;
         this.getList();
       },
-      // 删除商家的方法
-      // async removeDataById(sid) {
-      //   const comfirmResult = this.$confirm(
-      //     "此操作将永久删除该商家, 是否继续?",
-      //     "提示",
-      //     {
-      //       confirmButtonText: "确定",
-      //       cancelButtonText: "取消",
-      //       type: "warning",
-      //     }
-      //   ).catch((err) => err);
-      //   if (confirmRusult !== "confirm") {
-      //     return this.$message.info("已取消删除");
-      //   }
-      //   const { data: res } = await this.$http.delete(
-      //     "/orderingSystem/shop/deleteShop/" + id
-      //   );
-      //   if (res.meta.status !== 200) {
-      //     return this.$message.error("删除用户失败！");
-      //   }
-      //   this.$message.success("删除用户成功！");
-      //   this.getList();
-      // },
       //修改表头样式
       headerCellStyle() {
         return 'text-align: center; font-weight: 500; font-size: 14px';
@@ -197,6 +151,16 @@
   /* 表格 */
   .el-table{
     margin-top: 0;
+  }
+
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
   }
 </style>
 

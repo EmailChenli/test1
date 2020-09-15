@@ -1,14 +1,9 @@
 <template>
   <div>
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>会议室管理</el-breadcrumb-item>
-      <el-breadcrumb-item>历史记录</el-breadcrumb-item>
-      <el-breadcrumb-item>历史预订记录</el-breadcrumb-item>
-    </el-breadcrumb>
-
     <el-card>
+      <div slot="header" class="card-header-text">
+        <span>历史预订记录</span>
+      </div>
       <el-row :gutter="20">
         <el-col :span="7">
           <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="clear()">
@@ -207,7 +202,7 @@
     }
   }
 </script>
-<style>
+<style lang="less" scoped>
   .demo-table-expand {
     font-size: 0;
   }
@@ -220,4 +215,15 @@
     margin-bottom: 0;
     width: 50%;
   }
+
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
+  }
 </style>
+

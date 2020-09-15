@@ -72,7 +72,7 @@ const routes = [
         component:Information,
         redirect: '/employee/list/employee',
         children: [
-           // 员工管理
+          // 员工管理
           {path:'/employee/list/employee',component:Employee},
           {path:'/employee/list/employeeaccount',component:EmployeeAccount},
           {path:'/employee/list/employeedistribute',component:EmployeeDistribute},

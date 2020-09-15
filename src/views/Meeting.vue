@@ -70,7 +70,7 @@ export default {
             {
               path: "/meeting/apply",
               name: "申请列表",
-              icon: "el-icon-s-release",
+              icon: "el-icon-s-claim",
               children: [
                 {
                   path: "/meeting/apply/approved",

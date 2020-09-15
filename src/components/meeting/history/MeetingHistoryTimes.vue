@@ -1,14 +1,9 @@
 <template>
   <div>
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>会议室管理</el-breadcrumb-item>
-      <el-breadcrumb-item>历史记录</el-breadcrumb-item>
-      <el-breadcrumb-item>预订次数统计</el-breadcrumb-item>
-    </el-breadcrumb>
-
     <el-card>
+      <div slot="header" class="card-header-text">
+        <span>预订次数记录</span>
+      </div>
       <el-table :data="timesList" border style="width: 100%">
         <el-table-column prop="userName" label="账号" width="100"></el-table-column>
         <el-table-column prop="realname" label="姓名"></el-table-column>
@@ -77,3 +72,14 @@
     }
   }
 </script>
+<style lang="less" scoped>
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
+  }
+</style>
