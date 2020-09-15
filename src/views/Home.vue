@@ -33,7 +33,7 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <span style="display:block;" @click="setting">个人信息</span>
+            <span style="display:block;" @click="setting">个人中心</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出</span>
