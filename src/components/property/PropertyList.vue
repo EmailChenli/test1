@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card>
       <div slot="header" class="card-header-text">
-        <span>电脑信息列表</span>
+        <span>资产信息列表</span>
       </div>
       <!--查询表单-->
       <el-form :inline="true" class="demo-form-inline">

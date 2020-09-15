@@ -26,8 +26,9 @@ import MeetingHistory from '../components/meeting/history/MeetingHistory.vue'
 import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTimes.vue'
 import MeetingRooms from '../components/meeting/MeetingRooms.vue'
 import Approved from '../components/meeting/apply/Approved.vue'
-// 资产管理
 import NotApproved from '../components/meeting/apply/NotApproved.vue'
+// 资产管理
+import PropertyList from '../components/property/PropertyList.vue'
 import Books from '../components/property/book/Books.vue'
 import BookHistory from '../components/property/book/BookHistory.vue'
 import BookRent from '../components/property/book/BookRent.vue'
@@ -89,8 +90,10 @@ const routes = [
       {
         path:'/property',
         component:Property,
-        redirect: '/property/computer/list',
+        redirect: '/property/propertyList',
         children:[
+          // 资产列表
+          {path:'/property/propertyList',component:PropertyList},
           // 电脑管理
           {path:'/property/computer/list',component:Computers},
           {path:'/property/computer/history',component:History},
