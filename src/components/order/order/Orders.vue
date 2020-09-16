@@ -1,9 +1,19 @@
 <template>
   <div class="app-container">
+<<<<<<< HEAD
     <el-card>
       <div slot="header" class="card-header-text">
         <span>订单信息列表</span>
       </div>
+=======
+    <!--面包屑导航区域-->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>食品管理</el-breadcrumb-item>
+      <el-breadcrumb-item>食品列表</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-card>
+>>>>>>> 员工管理
       <!-- 查询表单 -->
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item>
@@ -74,6 +84,7 @@
       border
       fit
       highlight-current-column>
+<<<<<<< HEAD
 <el-table-column
         label="序号"
         width="200"
@@ -90,6 +101,32 @@
       <el-table-column prop="count" label="食品数量" />
 
       <el-table-column prop="subTotal" label="小计/元" />
+=======
+
+     <thead></thead>
+            <tbody>
+              <tr>
+                <td>日报类型</td>
+                <td>{{editForm.daily_type | filterType}}</td>
+              </tr>
+              <tr>
+                <td>开始时间</td>
+                <td>{{editForm.start_time  | formatTimer('hours')}}</td>
+              </tr>
+              <tr>
+                <td>结束时间</td>
+                <td>{{editForm.end_time | formatTimer('hours') }}</td>
+              </tr>
+              <tr>
+                <td>今日内容</td>
+                <td>{{editForm.content}}</td>
+              </tr>
+              <tr>
+                <td>计划</td>
+                <td>{{editForm.plan}}</td>
+              </tr>
+            </tbody>
+>>>>>>> 员工管理
     </el-table>
       </el-dialog>
 
@@ -187,6 +224,7 @@ export default {
 .input {
   width: 150px;
 }
+<<<<<<< HEAD
 .el-card{
     box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
     width: 98%;
@@ -196,4 +234,6 @@ export default {
 .card-header-text{
       text-align: left;
   }
+=======
+>>>>>>> 员工管理
 </style>
