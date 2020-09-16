@@ -1,38 +1,5 @@
 <template>
   <div class="login_container">
-<<<<<<< HEAD
-    <div class="login_box">
-      <el-form
-        class="login_form"
-        :rules="loginRules"
-        ref="loginFormRef"
-        :model="loginForm"
-        label-width="8px"
-        auto-complete="on"
-      >
-        <el-form-item prop="username">
-          <el-input
-            v-model="loginForm.username"
-            prefix-icon="el-icon-user"
-            auto-complete="on"
-            placeholder="username"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="loginForm.password"
-            :type="passwordType"
-            auto-complete="on"
-            placeholder="username"
-            prefix-icon="el-icon-lock"
-            @keyup.enter.native="login"
-          >
-            <i slot="suffix" class="el-icon-view el-input__icon" @click="showPassword"></i>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="btns" type="primary" @click.native.prevent="login">登录</el-button>
-=======
     <div>
       <span class="font">东信门户管理系统</span>
     </div>
@@ -61,7 +28,6 @@
         </el-form-item>
         <el-form-item>
           <el-button class="btns" type="primary" @click.native.prevent="login">登 录</el-button>
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
         </el-form-item>
       </el-form>
     </div>
@@ -69,16 +35,10 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-
-export default {
-  name: "userLogin",
-=======
 import SIdentify from '../components/login/SIdentify.vue'
 export default {
   name: "userLogin",
   components: { SIdentify },
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
   data() {
   
     return {
@@ -86,15 +46,11 @@ export default {
       loginForm: {
         username: "admin",
         password: "123456",
-<<<<<<< HEAD
-      },
-=======
         code:''
       },
       identifyCodes: '1234567890abcdefjhijklinopqrsduvwxyz',
       // 验证码
       identifyCode: '',
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       // 表单验证规则对象
       loginRules: {
         username: [
@@ -105,20 +61,14 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 15, message: "长度在 6 到 15个字符", trigger: "blur" },
         ],
-<<<<<<< HEAD
-=======
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { min: 4, max: 4, message: "请输入4个字符", trigger: "blur" },
         ],
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       },
       passwordType: "password",
     };
   },
-<<<<<<< HEAD
-  methods: {
-=======
   created(){
       this.refreshCode()
   },
@@ -129,7 +79,6 @@ export default {
   },
   methods: {
     // 显示密码
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     showPassword() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -137,19 +86,6 @@ export default {
         this.passwordType = "password";
       }
     },
-<<<<<<< HEAD
-    login() {
-      this.$refs.loginFormRef.validate((valid) => {
-        if (!valid) return;
-        // const { data: res } = await this.$http.post("login", this.loginForm);
-        // if (res.meta.status !== 200) return this.$message.error("登录失败!");
-        // this.$message.success("登陆成功");
-        // // 1.将登陆成功后的token，保存到客户端的sessionStorage中
-        // // 1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问
-        // // 1.2 token 只应子当前网站打开期间生效，所以讲token保存在sessionStorage中
-        // window.sessionStorage.setItem("token", res.data.token);
-        // // 2.通过编程式导航跳转到后台主页，路由地址是/home
-=======
      // 重置验证码
     refreshCode () {
       this.identifyCode = ''
@@ -176,7 +112,6 @@ export default {
       this.$refs.loginFormRef.validate((valid) => {
         if (!valid) return;
         // 通过编程式导航跳转到后台主页，路由地址是/home
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
          this.$router.push("/home");
       });
     },
@@ -186,43 +121,23 @@ export default {
 
 <style lang="less" scoped>
 .login_container {
-<<<<<<< HEAD
-  background-color: #2b4b6b;
-=======
   background-image: url('../assets/img/bg.png');
   background-size: cover;
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
   height: 100%;
 }
 
 .login_box {
   height: 300px;
   width: 400px;
-<<<<<<< HEAD
-  background-color: #fff;
-  border-radius: 3px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-=======
   background:rgba(255, 255, 255, 0.7);
   position: absolute;
   left: 50%;
   top: 60%;
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
   transform: translate(-50%, -50%);
 }
 
 .login_form {
   position: absolute;
-<<<<<<< HEAD
-  bottom: 30px;
-  width: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-=======
   bottom: 18px;
   width: 100%;
   padding: 0 25px;
@@ -246,15 +161,10 @@ export default {
 }
 
 /*登录按钮样式*/
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 .btns {
   width: 60%;
   border: 0px;
   align-self: center;
-<<<<<<< HEAD
-}
-</style>
-=======
   background-color: #336699;
 }
 
@@ -268,4 +178,3 @@ export default {
 }
 </style>
 
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8

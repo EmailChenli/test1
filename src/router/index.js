@@ -3,12 +3,6 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Welcome from '../views/Welcome.vue'
-<<<<<<< HEAD
-// 员工管理
-import Department from '../components/employee/components/Department'
-import Job from '../components/employee/components/Job'
-
-=======
 import Information from '../views/Information.vue'
 import Property from '../views/Property.vue'
 import Meetinng from '../views/Meeting.vue'
@@ -21,18 +15,11 @@ import ChangePassword from '../components/setting/ChangePassword.vue'
 // 信息管理
 import Department from '../components/employee/components/Department'
 import Job from '../components/employee/components/Job'
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 import Employee from '../components/employee/components/Employee'
 import EmployeeAccount from '../components/employee/components/EmployeeAccount'
 import EmployeeDistribute from '../components/employee/components/EmployeeDistribute'
 import EmployeeDimission from '../components/employee/components/EmployeeDimission'
-<<<<<<< HEAD
-
 import SystemRole from '../components/employee/components/SystemRole'
-import SystemChangePass from '../components/employee/components/SystemChangePass'
-=======
-import SystemRole from '../components/employee/components/SystemRole'
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 import SystemAccount from '../components/employee/components/SystemAccount'
 //会议管理
 import MeetingHistory from '../components/meeting/history/MeetingHistory.vue'
@@ -40,22 +27,15 @@ import MeetingHistoryTimes from '../components/meeting/history/MeetingHistoryTim
 import MeetingRooms from '../components/meeting/MeetingRooms.vue'
 import Approved from '../components/meeting/apply/Approved.vue'
 import NotApproved from '../components/meeting/apply/NotApproved.vue'
-<<<<<<< HEAD
-import Reserve from '../components/meeting/Reserve.vue'
-=======
 // 资产管理
 import PropertyList from '../components/property/PropertyList.vue'
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 import Books from '../components/property/book/Books.vue'
 import BookHistory from '../components/property/book/BookHistory.vue'
 import BookRent from '../components/property/book/BookRent.vue'
 import Computers from '../components/property/computer/Computers.vue'
 import History from '../components/property/computer/History.vue'
 import Rent from '../components/property/computer/Rent.vue'
-<<<<<<< HEAD
-=======
 // 订餐管理
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 import Food from '../components/order/food/Food.vue'
 import FoodSave from '../components/order/food/FoodSave.vue'
 import FoodType from '../components/order/foodType/FoodType.vue'
@@ -63,10 +43,7 @@ import FoodTypeSave from '../components/order/foodType/FoodTypeSave.vue'
 import Orders from '../components/order/order/Orders.vue'
 import Shops from '../components/order/shop/Shops.vue'
 import ShopSave from '../components/order/shop/ShopSave.vue'
-<<<<<<< HEAD
-=======
 // 网络管理
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 import IP from '../components/network/IP.vue'
 
 Vue.use(VueRouter);
@@ -80,41 +57,6 @@ const routes = [
     redirect: '/welcome',
     children:[
       {path:'/welcome',component:Welcome},
-<<<<<<< HEAD
-      //员工管理
-      {path:'/employee/company/deparment',component:Department},
-      {path:'/employee/company/job',component:Job},
-
-      {path:'/employee/list/employee',component:Employee},
-      {path:'/employee/list/employeeaccount',component:EmployeeAccount},
-      {path:'/employee/list/employeedistribute',component:EmployeeDistribute},
-      {path:'/employee/list/employeedimission',component:EmployeeDimission},
-
-      {path:'/employee/system/role',component:SystemRole},
-      {path:'/employee/system/systemaccount',component:SystemAccount},
-      {path:'/employee/system/updatepassword',component:SystemChangePass},
-      //会议室管理
-      {path:'/meeting/list',component:MeetingRooms},
-      {path:'/meeting/history/reserve',component:MeetingHistory},
-      {path:'/meeting/history/reservetimes',component:MeetingHistoryTimes},
-      {path:'/meeting/apply/approved',component:Approved},
-      {path:'/meeting/apply/notapproved',component:NotApproved},
-      {path:'/meeting/reserve',component:Reserve},
-      {path:'/property/book/list',component:Books},
-      {path:'/property/book/history',component:BookHistory},
-      {path:'/property/book/rent',component:BookRent},
-      {path:'/property/computer/list',component:Computers},
-      {path:'/property/computer/history',component:History},
-      {path:'/property/computer/rent',component:Rent},
-      {path:'/order/food/list',component:Food},
-      {path:'/order/food/add',component:FoodSave},
-      {path:'/order/foodType/list',component:FoodType},
-      {path:'/order/foodType/add',component:FoodTypeSave},
-      {path:'/order/orders',component:Orders},
-      {path:'/order/shop/list',component:Shops},
-      {path:'/order/shop/add',component:ShopSave},
-      {path:'/network/ip',component:IP}
-=======
       // 设置
       {
         path: '/setting', 
@@ -199,7 +141,6 @@ const routes = [
           {path:'/network/ip',component:IP}
         ]
       },
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     ]
   }
 ];

@@ -1,19 +1,9 @@
 <template>
   <div class="app-container">
-<<<<<<< HEAD
-    <!--面包屑导航区域-->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>商家管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商家列表</el-breadcrumb-item>
-    </el-breadcrumb>
-    <el-card>
-=======
     <el-card>
       <div slot="header" class="card-header-text">
         <span>商家信息列表</span>
       </div>
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       <!--查询表单-->
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item>
@@ -272,8 +262,6 @@ export default {
   height: 178px;
   display: block;
 }
-<<<<<<< HEAD
-=======
 .el-card{
     box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
     width: 98%;
@@ -283,5 +271,4 @@ export default {
 .card-header-text{
       text-align: left;
   }
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 </style>

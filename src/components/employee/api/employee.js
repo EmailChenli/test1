@@ -34,23 +34,15 @@ export function employeeadd(employee){
     })
 }
 
-<<<<<<< HEAD
 export function employeefindlike(employee,page){
-=======
-export function employeefindlike(employee){
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     return request({
         url: 'http://localhost:8003/sys/employee/findlike',
         method: 'post',
         data:
-<<<<<<< HEAD
             {
                 employee,
                 page
             }   
-=======
-            employee
->>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     })
 }
 
