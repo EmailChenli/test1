@@ -22,12 +22,21 @@
         </el-form>
 
         <el-header style="background-color:#C0C0C0"></el-header>
+<<<<<<< HEAD
           <div v-if="QueryForm.requestResult">
              <el-table @row-click="handleEdit" :data="QueryForm.employeeaccount" style="width: 100%">       
+=======
+
+        <div v-if="QueryForm.requestResult">
+
+             <el-table @row-click="handleEdit" :data="QueryForm.employeeaccount" style="width: 100%">
+               
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
                 <el-table-column prop="accountId" label="员工账号ID" width="180"></el-table-column>
                 <el-table-column prop="accountName" label="员工账号" width="180"></el-table-column>
                 <el-table-column prop="accountPassword" label="账号密码" width="180"></el-table-column>
                 <el-table-column prop="employeeId" label="员工ID" width="180"></el-table-column>
+<<<<<<< HEAD
                 <el-table-column prop="employeeName" label="员工名" width="180"></el-table-column>
                 <el-table-column prop="createTime" label="创建日期" width="180"></el-table-column>
                 <el-table-column prop="modifyTime" label="修改日期" width="180"></el-table-column>
@@ -42,6 +51,21 @@
 				                       <el-button size="mini"  type="danger"  @click="QueryForm.deleteButton = true" icon="el-icon-delete">删除</el-button>
 			                 </el-tooltip>
                     </el-col>
+=======
+                <el-table-column prop="createTime" label="创建日期" width="180"></el-table-column>
+                <el-table-column prop="modifyTime" label="修改日期" width="180"></el-table-column>
+                <el-table-column label="操作" fixed="right" width="200px" style="float=left">
+		                      <el-col :span="10">
+			                      <el-tooltip effect="dark" content="编辑当前行" placement="top">
+				                      <el-button size="mini"  type="primary" @click="QueryForm.updateButton = true" icon="el-icon-edit">编辑</el-button>
+			                      </el-tooltip>
+		                      </el-col>
+                          <el-col :span="10">
+                             <el-tooltip effect="dark" content="删除当前行" placement="top">
+				                       <el-button size="mini"  type="danger"  @click="QueryForm.deleteButton = true" icon="el-icon-delete">删除</el-button>
+			                       </el-tooltip>
+                          </el-col>
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 	              </el-table-column>
             </el-table>
         </div>       
@@ -50,17 +74,39 @@
         </div>
         <div style="margin-top: 5px;"></div><!--这个只是为了在页面上显示间隔-->
         <el-dialog title="添加员工账号" :visible.sync="QueryForm.addButton">
+<<<<<<< HEAD
             <el-form :model="modifyForm">
                 <el-form-item  label="账号名" :label-width="modifyForm.formLabelWidth">
+=======
+	             
+                 <el-form :model="addForm">
+                   <el-form-item  label="账号名" :label-width="modifyForm.formLabelWidth">
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 			               <el-input v-model="modifyForm.accountName" auto-complete="off"></el-input>
 		            </el-form-item>
 		             <el-form-item  label="账号密码" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-model="modifyForm.accountPassword" auto-complete="off"></el-input>
 		            </el-form-item>
+<<<<<<< HEAD
                 <el-form-item  label="员工ID" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-model="modifyForm.employeeId" auto-complete="off"></el-input>
 		            </el-form-item>
 	          </el-form>      
+=======
+                     <el-form-item  label="账号ID" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.accountId" auto-complete="off"></el-input>
+		            </el-form-item>
+		             <el-form-item  label="创建时间" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.createTime" auto-complete="off"></el-input>
+		            </el-form-item>
+                    <el-form-item  label="员工ID" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.employeeId" auto-complete="off"></el-input>
+		            </el-form-item>
+		             <el-form-item  label="更改时间" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.modifyTime" auto-complete="off"></el-input>
+		            </el-form-item>
+	             </el-form>      
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 	         <div slot="footer" class="dialog-footer">
 		          <el-button type="primary" @click="QueryForm.addButton = false">取 消</el-button>
 		          <el-button type="denger"  @click="accountadd">确 定</el-button>
@@ -70,14 +116,33 @@
         <div style="margin-top: 5px;"></div><!--这个只是为了在页面上显示间隔-->
         <el-dialog title="编辑账号" :visible.sync="QueryForm.updateButton">
 	            <el-form :model="modifyForm">
+<<<<<<< HEAD
                  <el-form-item  label="账号名" :label-width="modifyForm.formLabelWidth">
+=======
+		       
+                     <el-form-item  label="账号名" :label-width="modifyForm.formLabelWidth">
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 			               <el-input v-model="modifyForm.accountName" auto-complete="off"></el-input>
 		            </el-form-item>
 		             <el-form-item  label="账号密码" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-model="modifyForm.accountPassword" auto-complete="off"></el-input>
 		            </el-form-item>
+<<<<<<< HEAD
                 <el-form-item  label="员工ID" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-bind:readonly="true" v-model="modifyForm.employeeId" auto-complete="off"></el-input>
+=======
+                     <el-form-item  label="账号ID" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.accountId" auto-complete="off"></el-input>
+		            </el-form-item>
+		             <el-form-item  label="创建时间" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.createTime" auto-complete="off"></el-input>
+		            </el-form-item>
+                    <el-form-item  label="员工ID" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.employeeId" auto-complete="off"></el-input>
+		            </el-form-item>
+		             <el-form-item  label="更改时间" :label-width="modifyForm.formLabelWidth">
+			               <el-input v-model="modifyForm.modifyTime" auto-complete="off"></el-input>
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 		            </el-form-item>
 	            </el-form>
 	         <div slot="footer" class="dialog-footer">
@@ -87,13 +152,18 @@
         </el-dialog>
 
          <el-dialog title="提示框" :visible.sync="QueryForm.deleteButton">   
+<<<<<<< HEAD
               <p>是否永久删除！！！</p>
+=======
+              <p>是否永久删除该职位！！！</p>
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
            <div slot="footer" class="dialog-footer">
 		          <el-button type="primary" @click="QueryForm.deleteButton = false">取 消</el-button>
 		          <el-button type="denger"  @click="accountdelete">确 定</el-button>
 	         </div>
         </el-dialog>
         <el-dialog title="提示框" :visible.sync="QueryForm.msgButton">   
+<<<<<<< HEAD
               <p>{{msg}}</p>
         </el-dialog>
         <el-footer>
@@ -112,6 +182,10 @@
 
                 </el-pagination>
         </el-footer>
+=======
+              <p>操作成功！！！</p>
+        </el-dialog>
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       </el-main>
 </template>
 
@@ -143,6 +217,7 @@ export default {
           code:'',
           // 定义一个数据集合
           QueryForm: {
+<<<<<<< HEAD
                  page:{
                    currentPage:1,
                    pageSize:15
@@ -157,6 +232,18 @@ export default {
                  createTime: '',
                  employeeId: '',
                  modifyTime: '',
+=======
+                 msgButton:false,
+				 deleteButton: false,
+                 updateButton: false,
+                 addButton: false,
+                    accountId: '',
+                    accountName: '',
+                    accountPassword: '',
+                    createTime: '',
+                    employeeId: '',
+                    modifyTime: '',
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
                  employeeaccount: [{
                     accountId: '',
                     accountName: '',
@@ -167,16 +254,26 @@ export default {
                  }],
                  requestResult: false
           },modifyForm:{
+<<<<<<< HEAD
 				            formLabelWidth:'120px',
 			              accountId: '',
+=======
+				    formLabelWidth:'120px',
+			        accountId: '',
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
                     accountName: '',
                     accountPassword: '',
                     createTime: '',
                     employeeId: '',
                     modifyTime: '',
           },findlikeForm:{
+<<<<<<< HEAD
 				            formLabelWidth:'120px',
 				            accountId: '',
+=======
+				    formLabelWidth:'120px',
+				    accountId: '',
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
                     accountName: '',
                     accountPassword: '',
                     createTime: '',
@@ -184,8 +281,13 @@ export default {
                     modifyTime: '',
           },
           addForm:{
+<<<<<<< HEAD
 				            formLabelWidth:'120px',
 				            accountId: '',
+=======
+				    formLabelWidth:'120px',
+				    accountId: '',
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
                     accountName: '',
                     accountPassword: '',
                     createTime: '',
@@ -197,6 +299,7 @@ export default {
     this.accountall()
   },methods:{
       accountall() {
+<<<<<<< HEAD
         accountfindall(this.QueryForm.page).then((res) => {
             this.QueryForm.employeeaccount = res.data.data;
             this.QueryForm.requestResult=true;
@@ -225,11 +328,44 @@ export default {
             this.msg = res.data.msg;
             this.QueryForm.employeeaccount= res.data.data;
             this.QueryForm.msgButton=true;
+=======
+            accountfindall().then((res) => {
+              //console.log(res);
+              //console.log(this.department)
+              this.QueryForm.employeeaccount = res.data.data;
+              //console.log(this.QueryForm.department);
+              //this.msg = res.data.msg;
+              this.QueryForm.requestResult=true;
+              //console.log(res.data);
+            });
+      },
+      accountupdate(){
+          console.log(this.modifyForm);
+          //console.log(this.QueryForm.job);
+            accountupdate(this.modifyForm).then((res)=>{
+              this.QueryForm.updateButton= false;
+              this.QueryForm.msgButton=true;
+              console.log(res);
+            });
+      },
+      handleEdit(currentrow) {
+        this.modifyForm=currentrow;
+      },
+      accountfindlike(){
+         this.findlikeForm.accountId=this.QueryForm.accountId;
+         this.findlikeForm.accountName=this.QueryForm.accountName;
+         console.log(this.findlikeForm);
+        accountfindlike(this.findlikeForm).then((res)=>{
+            this.QueryForm.employeeaccount= res.data.data;
+            this.QueryForm.msgButton=true;
+            console.log(res);
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
         });
       },
       accountdelete(){
          console.log(this.modifyForm);
          this.QueryForm.deleteButton = false;
+<<<<<<< HEAD
          //accountdelete(this.modifyForm.accountId).then((res)=>{
          //});
       },
@@ -265,6 +401,13 @@ export default {
               this.QueryForm.employeeaccount = res.data.data;
               this.QueryForm.requestResult=true;
             });
+=======
+        
+      },
+      accountadd(){
+         console.log(this.modifyForm);
+         this.QueryForm.addButton = false
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       }
   }
 }

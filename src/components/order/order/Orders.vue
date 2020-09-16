@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+<<<<<<< HEAD
     <!--面包屑导航区域-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -7,6 +8,12 @@
       <el-breadcrumb-item>食品列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
+=======
+    <el-card>
+      <div slot="header" class="card-header-text">
+        <span>订单信息列表</span>
+      </div>
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
       <!-- 查询表单 -->
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item>
@@ -77,6 +84,7 @@
       border
       fit
       highlight-current-column>
+<<<<<<< HEAD
 
      <thead></thead>
             <tbody>
@@ -101,6 +109,24 @@
                 <td>{{editForm.plan}}</td>
               </tr>
             </tbody>
+=======
+<el-table-column
+        label="序号"
+        width="200"
+        align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.$index + 1 }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="foodName" label="食品名称"  />
+
+      <el-table-column prop="price" label="食品价格" />
+
+      <el-table-column prop="count" label="食品数量" />
+
+      <el-table-column prop="subTotal" label="小计/元" />
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     </el-table>
       </el-dialog>
 
@@ -198,4 +224,16 @@ export default {
 .input {
   width: 150px;
 }
+<<<<<<< HEAD
+=======
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0, 0, 0.15)!important;
+    width: 98%;
+    margin:15px auto;
+  }
+
+.card-header-text{
+      text-align: left;
+  }
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 </style>

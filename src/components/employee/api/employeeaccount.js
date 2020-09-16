@@ -1,11 +1,18 @@
 import request from '../utils/request'
 
+<<<<<<< HEAD
 export function accountfindall(page){
     return request({
         url: 'http://localhost:8003/sys/account/findall',
         method: 'post',
         data:
             page
+=======
+export function accountfindall(){
+    return request({
+        url: 'http://localhost:8003/sys/account/findall',
+        method: 'get'
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
     })
 }
 
@@ -16,6 +23,7 @@ export function accountfindbyid(accountId){
     })
 }
 
+<<<<<<< HEAD
 export function accountdelete(accountId){
     return request({
         url: 'http://localhost:8003/sys/account/delete/'+accountId,
@@ -23,6 +31,8 @@ export function accountdelete(accountId){
     })
 }
 
+=======
+>>>>>>> cb28b31a0f704cf78eb8d8f63bed48906ddeaaf8
 export function accountupdate(account){
     return request({
         url: 'http://localhost:8003/sys/account/update',
