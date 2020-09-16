@@ -1,18 +1,11 @@
 import request from '../utils/request'
 
-<<<<<<< HEAD
-export function accountfindall(){
-    return request({
-        url: 'http://localhost:8003/sys/account/findall',
-        method: 'get'
-=======
 export function accountfindall(page){
     return request({
         url: 'http://localhost:8003/sys/account/findall',
         method: 'post',
         data:
             page
->>>>>>> 员工管理
     })
 }
 
@@ -23,8 +16,6 @@ export function accountfindbyid(accountId){
     })
 }
 
-<<<<<<< HEAD
-=======
 export function accountdelete(accountId){
     return request({
         url: 'http://localhost:8003/sys/account/delete/'+accountId,
@@ -32,7 +23,6 @@ export function accountdelete(accountId){
     })
 }
 
->>>>>>> 员工管理
 export function accountupdate(account){
     return request({
         url: 'http://localhost:8003/sys/account/update',

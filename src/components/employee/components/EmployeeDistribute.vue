@@ -1,43 +1,26 @@
 <template>
     <el-main>
+        <el-card>
+          <div slot="header" class="card-header-text">
+            <span>员工分配信息列表</span>
+          </div>
        <el-form :model="QueryForm" ref="QueryForm" label-width="100px" class="demo-ruleForm" size="mini">
             <el-row>
-<<<<<<< HEAD
-              
-=======
->>>>>>> 员工管理
                 <el-col style="width: 250px;">
                     <el-form-item label="员工ID">
                         <el-input v-model="QueryForm.employeeId"></el-input>
                     </el-form-item>
                 </el-col>
-<<<<<<< HEAD
-                <el-col style="width: 250px;">
-=======
                 
                  <el-col style="width: 250px;">
->>>>>>> 员工管理
                     <el-form-item label="员工名">
                         <el-input v-model="QueryForm.employeeName"></el-input>
                     </el-form-item>
                 </el-col>
-<<<<<<< HEAD
-                 <el-col style="width: 250px;">
-                    <el-form-item label="部门名">
-                        <el-input v-model="QueryForm.departmentName"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :span="5">
-                    <el-button type="primary" @click="QueryForm.addButton= true" icon="el-icon-search">查询</el-button>
-                    <el-button type="primary" plain @click="QueryForm.addButton= true" icon="el-icon-edit">添加</el-button>
-                </el-col>
-=======
                 
                 <el-col :span="5">
                     <el-button type="primary" @click="employeeDistributefindlike" icon="el-icon-search">查询</el-button>
                </el-col>
->>>>>>> 员工管理
             </el-row>
         </el-form>
         <el-header style="background-color:#C0C0C0"></el-header>
@@ -66,24 +49,6 @@
         </div>
 
          <div style="margin-top: 5px;"></div><!--这个只是为了在页面上显示间隔-->
-<<<<<<< HEAD
-        <el-dialog title="编辑信息" :visible.sync="QueryForm.updateButton">
-	            <el-form :model="modifyForm">
-		             <el-form-item   label="员工名" :label-width="modifyForm.formLabelWidth">
-			               <el-input  v-model="modifyForm.employeeName" auto-complete="off"></el-input>
-		            </el-form-item>
-		             <el-form-item  label="身份证号码" :label-width="modifyForm.formLabelWidth">
-			               <el-input v-model="modifyForm.employeeIdcard" auto-complete="off"></el-input>
-		            </el-form-item>
-                     <el-form-item  label="邮箱" :label-width="modifyForm.formLabelWidth">
-			               <el-input v-model="modifyForm.employeeEmail" auto-complete="off"></el-input>
-		            </el-form-item>
-                    <el-form-item  label="性别" :label-width="modifyForm.formLabelWidth">
-			               <el-input v-model="modifyForm.employeeSex" auto-complete="off"></el-input>
-		            </el-form-item>
-		             <el-form-item  label="居住地" :label-width="modifyForm.formLabelWidth">
-			               <el-input v-model="modifyForm.employeeAddress" auto-complete="off"></el-input>
-=======
         <el-dialog title="职位调度" :visible.sync="QueryForm.updateButton">
 	            <el-form :model="modifyForm">
                     <el-form-item v-show="false"  label="员工ID" :label-width="modifyForm.formLabelWidth">
@@ -94,7 +59,6 @@
 		            </el-form-item>
 		             <el-form-item  label="身份证号码" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-bind:readonly="isReadOnly=true" v-model="modifyForm.employeeIdcard" auto-complete="off"></el-input>
->>>>>>> 员工管理
 		            </el-form-item>
                    <el-form-item  label="职位名" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-model="modifyForm.jobName" auto-complete="off"></el-input>
@@ -102,18 +66,11 @@
                     <el-form-item  label="部门名" :label-width="modifyForm.formLabelWidth">
 			               <el-input v-model="modifyForm.departmentName" auto-complete="off"></el-input>
 		            </el-form-item>
-<<<<<<< HEAD
-	            </el-form>
-	         <div slot="footer" class="dialog-footer">
-		          <el-button type="primary" @click="QueryForm.updateButton = false">取 消</el-button>
-		          <el-button type="denger"  @click="QueryForm.updateButton = false">确 定</el-button>
-=======
                     
 	            </el-form>
 	         <div slot="footer" class="dialog-footer">
 		          <el-button type="primary" @click="QueryForm.updateButton = false">取 消</el-button>
 		          <el-button type="denger"  @click="employeeDistributeupdate">确 定</el-button>
->>>>>>> 员工管理
 	         </div>
         </el-dialog>
 
@@ -133,17 +90,14 @@
 
                 </el-pagination>
         </el-footer>
+        </el-card>
     </el-main>              
 </template>
 
 
 <script>
 import { employeeDistributefindall } from '../api/employeedistribute'
-<<<<<<< HEAD
-import { employeeDistributeupdata } from '../api/employeedistribute'
-=======
 import { employeeDistributeupdate } from '../api/employeedistribute'
->>>>>>> 员工管理
 import { employeeDistributefindlike } from '../api/employeedistribute'
 
 export default {
@@ -190,11 +144,7 @@ export default {
                     modifyTime: '',
                  }],
                  requestResult: false
-<<<<<<< HEAD
-          },modifyForm:{
-=======
           },modifyForm: {
->>>>>>> 员工管理
 				    formLabelWidth:'120px',
 			        createTime: '',
                     employeeAddress: '',
@@ -220,9 +170,6 @@ export default {
             });
         },
         handleEdit(row){
-<<<<<<< HEAD
-            this.modifyFrom = row;
-=======
             this.modifyForm=row;
         },
         employeeDistributeupdate(){
@@ -248,7 +195,6 @@ export default {
                     this.QueryForm.requestResult=true;
                  });
             }
->>>>>>> 员工管理
         },
         handleSizeChange(val) {
             this.QueryForm.page.pageSize=val;
