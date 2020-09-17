@@ -6,8 +6,8 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入会议室号" v-model="keyWord" clearable @clear="getRoomList">
-            <el-button slot="append" icon="el-icon-search" @click="searchRoom()"></el-button>
+          <el-input placeholder="请输入会议室编号或名称" v-model="keyWord" clearable @clear="clear()">
+            <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
         </el-col>
         <el-col :span="1.5">
@@ -159,10 +159,8 @@
     },
     methods: {
       getRoomList () {
-        axios.post('http://localhost:8080/meetingroom/findAll', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows
-        }).then((response) => {
+        axios.get(`http://localhost:8005/meetingroom/room/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
+          .then((response) => {
             if(response.data.code == 400){
               this.$message.error("获取数据失败："+response.data.message)
             }else{
@@ -176,31 +174,42 @@
       // 监听pageSize改变的事情
       handleSizeChange (newSize) {
         this.queryInfo.rows = newSize
-        if(this.total == 1) return
-        this.getRoomList()
+        if (this.keyWord == ''){
+          this.getRoomList()
+        }else{
+          this.searchRoom()
+        }
       },
       // 监听页码值改变的事件
       handleCurrentChange (newPage) {
         this.queryInfo.page = newPage
-        if(this.total == 1) return
-        this.getRoomList()
+        if (this.keyWord == ''){
+          this.getRoomList()
+        }else{
+          this.searchRoom()
+        }
+      },
+      doSearch(){
+        if(this.keyWord == ''){
+          this.$message.info("请输入搜索条件")
+          return
+        }else{
+          this.queryInfo.page = 1
+          this.queryInfo.rows = 5
+          this.searchRoom()
+        }
       },
       searchRoom () {
-        if(this.keyWord == ''){
-          this.$message.info("请输入会议室号进行搜索")
-          return
-        }
-        axios.get('http://localhost:8080/meetingroom/find/' + this.keyWord)
-          .then((response) => {
+        axios.post(`http://localhost:8005/meetingroom/room/searchRoom/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+            para: this.keyWord
+
+          }).then((response) => {
             if(response.data.code == 400){
-              return this.$message.error("查询失败")
-            }if(response.data.data.meetingRoom == null){
-              return this.$message.error("会议室不存在")
+              this.$message.error("查询失败：" + response.data.message)
+            } else {
+              this.roomList = response.data.data.list
+              this.total = response.data.data.count
             }
-            let arr = []
-            arr[0] = (response.data.data.meetingRoom)
-            this.roomList = arr
-            this.total = 1
           }).catch((response) =>{
           console.log(response)
         })
@@ -214,7 +223,7 @@
       addRoom () {
         this.$refs.addFormRef.validate(async valid => {
           if (!valid) return
-          axios.post('http://localhost:8080/meetingroom/save', {
+          axios.post(`http://localhost:8005/meetingroom/room/saveRoom`, {
             roomId: this.addForm.roomId,
             roomName: this.addForm.roomName,
             roomSize: this.addForm.roomSize,
@@ -243,7 +252,7 @@
       eidtRoom () {
         this.$refs.editFormRef.validate(async valid => {
           if (!valid) return
-          axios.post('http://localhost:8080/meetingroom/update', {
+          axios.post(`http://localhost:8005/meetingroom/room/updateRoom`, {
             roomId: this.editForm.roomId,
             roomName: this.editForm.roomName,
             roomSize: this.editForm.roomSize,
@@ -262,7 +271,7 @@
           })
         })
       },
-      async removeRoomById(id){
+      async removeRoomById(roomId){
         const confirmResult = await this.$confirm('此操作将永久删除该会议室, 是否继续?',
           '提示',
           {
@@ -271,9 +280,9 @@
             type: 'warning'
           }).catch(err => err)
         if (confirmResult !== 'confirm') {
-          return this.$message.info('已取消删除')
+          return this.$message.info('已取消')
         }
-        axios.get('http://localhost:8080/meetingroom/delete/' + id).then((response) =>{
+        axios.get(`http://localhost:8005/meetingroom/room/deleteRoom/${roomId}`).then((response) =>{
           if(response.data.code == 400){
             return this.$message.error("删除失败：" + response.data.message)
           }
@@ -291,6 +300,11 @@
         }else{
           this.searchRoom()
         }
+      },
+      clear(){
+        this.queryInfo.page = 1
+        this.queryInfo.rows = 5
+        this.getRoomList()
       }
     }
   }
