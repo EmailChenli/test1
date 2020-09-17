@@ -6,7 +6,7 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="getApprovedList">
+          <el-input placeholder="请输入会议名称、会议室编号或账号" v-model="keyWord" clearable @clear="getApprovedList">
             <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
         </el-col>
@@ -108,10 +108,8 @@
     },
     methods: {
       getApprovedList(){
-        axios.post('http://localhost:8005/meetingroom/meetingbooking/findApproved', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
-        }).then((response) => {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/findApproved/${this.queryInfo.page}/${this.queryInfo.rows}`)
+          .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败："+ response.data.message)
             } else {
@@ -144,7 +142,8 @@
       },
       doSearch(){
         if (this.keyWord == ''){
-          this.getApprovedList()
+          this.$message.info("请输入搜索条件")
+          return
         }else{
           this.queryInfo.page = 1
           this.queryInfo.rows = 5
@@ -152,10 +151,9 @@
         }
       },
       searchApproved(){
-        axios.post('http://localhost:8005/meetingroom/meetingbooking/findApproved', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
-          userName: this.keyWord
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/searchApproved/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+          para: this.keyWord
+
         }).then((response) => {
           if (response.data.code == 400) {
             this.$message.error("查询失败：" + response.data.message)
@@ -181,7 +179,7 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消')
         }
-        axios.post('http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus', {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus`, {
           bookingId: this.reapprovalForm.bookingId,
           rejectReason: '',
           status: 1
