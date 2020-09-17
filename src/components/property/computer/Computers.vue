@@ -158,8 +158,8 @@ export default {
       searchStatus: "all", //状态栏被选中的值，默认为all
       statusOptions: [
         { name: "全部", value: "all" },
-        { name: "空闲", value: "free" },
-        { name: "被拥有", value: "owned" },
+        { name: "空闲", value: "0" },
+        { name: "被拥有", value: "1" },
       ],
       //控制添加电脑对话框的显示与隐藏
       addDialogVisible: false,

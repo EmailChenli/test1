@@ -10,22 +10,23 @@
           <el-input
             v-model="searchData"
             name="searchCom"
-            placeholder="电脑编号/品牌/持有人.."
+            placeholder="资产编号/生产厂商/购买人.."
             autocomplete="off"
           />
         </el-form-item>
+        <!--资产类型下拉框-->
         <el-form-item class="form-item-layout select-box">
-          <el-select name="comStatus" v-model="searchStatus">
+          <el-select name="assetType" v-model="searchAssetType">
             <el-option
-              v-for="(item,key) in statusOptions"
+              v-for="(item,key) in assetTypeOptions"
               :key="key"
-              :label="item.name"
-              v-bind:value="item.value"
+              :label="item.assetTypeName"
+              v-bind:value="item.typeId"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="form-item-layout">
-          <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="getAssetList()">查询</el-button>
         </el-form-item>
         <el-form-item class="form-item-layout" style="float: right; margin-right: 0;">
           <el-button type="primary" @click="addDialogVisible=true">添加电脑</el-button>
@@ -37,18 +38,21 @@
         :data="list"
         border
         style="width: 100%;"
+        fit
         :header-cell-style="headerCellStyle"
         :cell-style="cellStyle"
+        :show-header="list.length !== 0"
+        empty-text="No Data"
       >
-        <!-- <el-table-column type="index" label="序号"></el-table-column> -->
-        <el-table-column prop="comSn" label="电脑SN码" width="175" :resizable="false"></el-table-column>
-        <el-table-column prop="assetNum" label="资产编号" :resizable="false"></el-table-column>
-        <el-table-column prop="comType" label="电脑类型" :resizable="false"></el-table-column>
-        <el-table-column prop="comName" label="电脑名称" :resizable="false"></el-table-column>
-        <el-table-column prop="comCpu" label="电脑处理器" :resizable="false"></el-table-column>
-        <el-table-column prop="comMemory" label="电脑内存" :resizable="false"></el-table-column>
-        <el-table-column prop="employeeName" label="持有人" :resizable="false"></el-table-column>
-        <el-table-column prop="comStatus" label="状态" :resizable="false"></el-table-column>
+        <!--<el-table-column prop="id" label="序号" width="100" :resizable="false"></el-table-column>-->
+        <el-table-column prop="assetNum" label="资产编号" width="150" :resizable="false"></el-table-column>
+        <el-table-column prop="assetName" label="资产名称" :resizable="false"></el-table-column>
+        <el-table-column prop="unitPrice" label="单价" :resizable="false"></el-table-column>
+        <el-table-column prop="producer" label="生产厂商" :resizable="false"></el-table-column>
+        <el-table-column prop="productionDate" label="生产日期" :resizable="false"></el-table-column>
+        <el-table-column prop="storageTime" label="入库时间" :resizable="false"></el-table-column>
+        <el-table-column prop="purchaser" label="购买人" :resizable="false"></el-table-column>
+        <el-table-column prop="assetType" label="资产类型" :resizable="false"></el-table-column>
         <el-table-column label="操作" width="176" :resizable="false">
           <template slot-scope="scope">
             <el-button
@@ -72,11 +76,13 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="page"
-        :page-size="limit"
-        :page-sizes="[5, 10, 12,15]"
-        layout="total, sizes, prev, pager, next, jumper"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        background
+        :page-sizes="[5,10,12,15]"
+        layout="total, sizes, prev, pager, next"
         :total="total"
+        v-show="total>0"
       ></el-pagination>
     </el-card>
 
@@ -145,21 +151,20 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      page: 1, //当前页
-      limit: 10, //每页记录数
-      shopQuery: {}, //条件封装对象
+      currentPage: 1, //当前页
+      pageSize: 10, //每页记录数
       list: [], //查询之后接口返回集合
       total: 0, //总记录数
       src: "",
-      searchData: "",
-      searchStatus: "all", //状态栏被选中的值，默认为all
-      statusOptions: [
-        { name: "全部", value: "all" },
-        { name: "空闲", value: "free" },
-        { name: "被拥有", value: "owned" },
+      searchData: "",  //查询框的数据
+      searchAssetType: "0", //资产类型栏被选中的值，默认为0，代表选择全部
+      assetTypeOptions: [
+        { assetTypeName: "全部", typeId: "0" }
       ],
       //控制添加电脑对话框的显示与隐藏
       addDialogVisible: false,
@@ -198,50 +203,66 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //获取资产类型
+    this.getAssetTypeList();
+    //获取资产列表
+    this.getAssetList();
   },
   methods: {
-    //电脑信息列表
-    async getList(page = 1) {
-      // console.log(this.searchStatus);
-      this.page = page;
-      this.list = [
-        {
-          comSn: "sijij",
-          assetNum: "东信123",
-          comType: "笔记本",
-          comName: "戴尔灵越5000",
-          comCpu: "i7",
-          comMemory: "16G",
-          employeeName: "bb" != null ? "小白" : "无",
-          comStatus: "被拥有",
-        },
-      ];
-      //console.log('1233');
-      // const { data: res } = await this.$http.post(
-      //   "/orderingSystem/shop/pageShop/${page}/${limit}", {
-      //     page,limit,shopQuery
-      //   });
-      // if (res.meta.status !== 200)
-      //   return this.$message.error("获取用户表单失败！");
-      // this.list = response.data.rows;
-      // this.total = response.data.total;
-      // this.src = response.data.rows.cover;
-      // console.log(this.list);
-      // console.log(this.total);
+    //获取所有资产类型
+    getAssetTypeList() {
+      let _this = this;
+      axios.get('/asset/type/getAssetTypeList')
+        .then((response) => {
+          console.log(response);
+          if(response.data.code == 400){ //请求错误
+            this.$message.error(response.data.message);
+          }else{
+              //将查出来的资产类型数组和assetTypeOptions合并
+              _this.assetTypeOptions = _this.assetTypeOptions.concat(response.data.data);
+          }
+      })
+      .catch((error) => {
+        console.log(error); //异常
+      });
     },
-    // 监听pagesize改变
+    //获取资产列表
+    async getAssetList() {
+        //用于做请求参数的query
+        let query = {
+          "keyword": this.searchData,
+          "assetType" : this.searchAssetType,
+          "currentPage" : this.currentPage,
+          "pageSize" : this.pageSize
+        };
+      console.log(query);
+      axios.post('/asset/management/info/searchAssetByCondition',query)
+        .then((response) => {
+          if(response.data.code == 400){ //请求错误
+            this.$message.error(response.data.message);
+          }else{
+            console.log(response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error); //异常
+        });
+    },
+
+    //分页监听事件
+    // 监听每页记录数pageSize改变的时间
     handleSizeChange(newSize) {
-      // console.log(newSize)
-      this.page = newSize;
-      this.getList();
+      console.log(newSize);
+      this.pageSize = newSize;
+      this.getAssetList();
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
       console.log(newPage);
-      this.limit = newPage;
-      this.getList();
+      this.currentPage = newPage;
+      this.getAssetList();
     },
+
     //展示修改电脑信息对话框
     async showEditDialog(row) {
       this.editForm.comSn = row.comSn;
@@ -271,7 +292,7 @@ export default {
         //隐藏添加用户的对话框
         this.addDialogVisible = false;
         // 重新获取用户表单数据
-        this.getrList();
+        //this.getList();
       });
     },
     // 监听修改电脑对话框的关闭事件
