@@ -98,7 +98,7 @@
     },
     methods: {
       getNotApprovedList() {
-        axios.post('http://localhost:8080/meetingbooking/findByStatus', {
+        axios.post('http://localhost:8005/meetingroom/meetingbooking/findByStatus', {
           page: this.queryInfo.page,
           rows: this.queryInfo.rows,
           status: 0
@@ -140,8 +140,7 @@
       },
       doSearch(){
         if (this.keyWord == ''){
-            this.$message.info("请输入账号进行搜索")
-            return
+          this.getNotApprovedList()
         }else{
           this.queryInfo.page = 1
           this.queryInfo.rows = 5
@@ -149,7 +148,7 @@
         }
       },
       searchNotApproved() {
-        axios.post('http://localhost:8080/meetingbooking/findByUserNameAndStatus', {
+        axios.post('http://localhost:8005/meetingroom/meetingbooking/findByUserNameAndStatus', {
           page: this.queryInfo.page,
           rows: this.queryInfo.rows,
           status: 0,

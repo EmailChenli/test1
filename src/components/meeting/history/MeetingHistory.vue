@@ -6,7 +6,7 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="clear()">
+          <el-input placeholder="请输入会议室编号、账号或申请人" v-model="keyWord" clearable @clear="clear()">
             <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
         </el-col>
@@ -100,10 +100,8 @@
     },
     methods: {
       getRecordList() {
-        axios.post('http://localhost:8080/meetingrecord/findAll', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows
-        }).then((response) => {
+        axios.get(`http://localhost:8005/meetingroom/meetingrecord/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
+          .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败："+response.data.message)
             } else {
@@ -139,7 +137,7 @@
       },
       doSearch(){
         if (this.keyWord == ''){
-          this.$message.info("请输入账号进行搜索")
+          this.$message.info("请输入搜索条件")
           return
         }else{
           this.queryInfo.page = 1
@@ -148,10 +146,9 @@
         }
       },
       searchRecord(){
-        axios.post('http://localhost:8080/meetingrecord/searchRecordByUserName', {
-          userName: this.keyWord,
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows
+        axios.post(`http://localhost:8005/meetingroom/meetingrecord/searchRecord/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+          para: this.keyWord,
+
         }).then((response) => {
             if (response.data.code == 400) {
               this.$message.error("查询失败：" + response.data.message)
@@ -163,7 +160,7 @@
           console.log(response)
         })
       },
-      async removeRecordById(id){
+      async removeRecordById(recordId){
         const confirmResult = await this.$confirm('此操作将永久删除该记录, 是否继续?',
           '提示',
           {
@@ -174,7 +171,8 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消删除')
         }
-        axios.get('http://localhost:8080/meetingrecord/delete/' + id).then((response) =>{
+        axios.get(`http://localhost:8005/meetingroom/meetingrecord/deleteRecord/${recordId}`)
+          .then((response) =>{
           if(response.data.code == 400){
             return this.$message.error("删除失败：" + response.data.message)
           }
