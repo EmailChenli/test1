@@ -41,7 +41,7 @@
         fit
         :header-cell-style="headerCellStyle"
         :cell-style="cellStyle"
-        :show-header="list.length !== 0"
+        :show-header="total > 0"
         empty-text="No Data"
       >
         <!--<el-table-column prop="id" label="序号" width="100" :resizable="false"></el-table-column>-->
@@ -52,7 +52,7 @@
         <el-table-column prop="productionDate" label="生产日期" :resizable="false"></el-table-column>
         <el-table-column prop="storageTime" label="入库时间" :resizable="false"></el-table-column>
         <el-table-column prop="purchaser" label="购买人" :resizable="false"></el-table-column>
-        <el-table-column prop="assetType" label="资产类型" :resizable="false"></el-table-column>
+        <el-table-column prop="assetTypeName" label="资产类型" :resizable="false"></el-table-column>
         <el-table-column label="操作" width="176" :resizable="false">
           <template slot-scope="scope">
             <el-button
@@ -89,23 +89,36 @@
     <!--添加电脑对话框-->
     <el-dialog title="添加电脑" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-        <el-form-item label="电脑SN码" prop="comSn">
-          <el-input v-model="addForm.comSn"></el-input>
-        </el-form-item>
         <el-form-item label="资产编号" prop="assetNum">
           <el-input v-model="addForm.assetNum"></el-input>
         </el-form-item>
-        <el-form-item label="电脑类型" prop="comType">
-          <el-input v-model="addForm.comType"></el-input>
+        <el-form-item label="资产名称" prop="assetName">
+          <el-input v-model="addForm.assetName"></el-input>
         </el-form-item>
-        <el-form-item label="电脑名称" prop="comName">
-          <el-input v-model="addForm.comName"></el-input>
+        <el-form-item label="单价" prop="unitPrice">
+          <el-input v-model="addForm.unitPrice"></el-input>
         </el-form-item>
-        <el-form-item label="电脑处理器" prop="comCpu">
-          <el-input v-model="addForm.comCpu"></el-input>
+        <el-form-item label="生产厂商" prop="producer">
+          <el-input v-model="addForm.producer"></el-input>
         </el-form-item>
-        <el-form-item label="电脑内存" prop="comMemory">
-          <el-input v-model="addForm.comMemory"></el-input>
+        <el-form-item label="生产日期" prop="productionData">
+          <el-input v-model="addForm.productionData"></el-input>
+        </el-form-item>
+        <el-form-item label="入库时间" prop="storageTime">
+          <el-input v-model="addForm.storageTime"></el-input>
+        </el-form-item>
+        <el-form-item label="购买人" prop="purchaser">
+          <el-input v-model="addForm.purchaser"></el-input>
+        </el-form-item>
+        <el-form-item label="资产类型" prop="assetType">
+          <el-select name="assetType" v-model="addForm.currentAssetType">
+            <el-option
+              v-for="(item,key) in assetTypeList"
+              :key="key"
+              :label="item.assetTypeName"
+              v-bind:value="item.typeId"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="addDialogVisible">
@@ -115,32 +128,35 @@
     </el-dialog>
     <!--修改电脑信息对话框-->
     <el-dialog
-      title="修改电脑信息"
+      title="修改资产信息"
       :visible.sync="editDialogVisible"
       width="50%"
       @close="editDialogClosed"
     >
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
-        <el-form-item label="电脑SN码">
-          <el-input v-model="editForm.comSn" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="资产编号">
+        <el-form-item label="资产编号" prop="assetNum">
           <el-input v-model="editForm.assetNum" disabled></el-input>
         </el-form-item>
-        <el-form-item label="电脑类型" prop="comType">
-          <el-input v-model="editForm.comType"></el-input>
+        <el-form-item label="资产名称" prop="assetName">
+          <el-input v-model="editForm.assetName"></el-input>
         </el-form-item>
-        <el-form-item label="电脑名称" prop="comName">
-          <el-input v-model="editForm.comName"></el-input>
+        <el-form-item label="单价" prop="unitPrice">
+          <el-input v-model="editForm.unitPrice"></el-input>
         </el-form-item>
-        <el-form-item label="电脑处理器" prop="comCpu">
-          <el-input v-model="editForm.comCpu"></el-input>
+        <el-form-item label="生产厂商" prop="producer">
+          <el-input v-model="editForm.producer"></el-input>
         </el-form-item>
-        <el-form-item label="电脑内存" prop="comMemory">
-          <el-input v-model="editForm.comMemory"></el-input>
+        <el-form-item label="生产日期" prop="productionData">
+          <el-input v-model="editForm.productionData"></el-input>
         </el-form-item>
-        <el-form-item label="持有人" prop="employeeName">
-          <el-input v-model="editForm.employeeName"></el-input>
+        <el-form-item label="入库时间" prop="storageTime">
+          <el-input v-model="editForm.storageTime"></el-input>
+        </el-form-item>
+        <el-form-item label="购买人" prop="purchaser">
+          <el-input v-model="editForm.purchaser"></el-input>
+        </el-form-item>
+        <el-form-item label="资产类型" prop="assetType">
+          <el-input v-model="editForm.assetType"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -151,7 +167,8 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+// import axios from "axios";
+import asset from "@/api/property/asset.js";
 
 export default {
   data() {
@@ -160,27 +177,28 @@ export default {
       pageSize: 10, //每页记录数
       list: [], //查询之后接口返回集合
       total: 0, //总记录数
-      src: "",
-      searchData: "",  //查询框的数据
+      assetTypeList: null,
+      searchData: "", //查询框的数据
       searchAssetType: "0", //资产类型栏被选中的值，默认为0，代表选择全部
-      assetTypeOptions: [
-        { assetTypeName: "全部", typeId: "0" }
-      ],
+      assetTypeOptions: [{ assetTypeName: "全部", typeId: "0" }],
       //控制添加电脑对话框的显示与隐藏
       addDialogVisible: false,
       // 添加电脑表单数据对象
       addForm: {
-        comSn: "",
+        currentAssetType: "请选择", // 当前选中的类型
         assetNum: "",
-        comType: "",
-        comName: "",
-        comCpu: "",
-        comMemory: "",
+        assetName: "",
+        unitPrice: "",
+        producer: "",
+        productionData: "",
+        storageTime: "",
+        purchaser: "",
+        assetType: "",
       },
       // 添加电脑表单验证规则
       addFormRules: {
         comSn: [
-          { required: true, message: "电脑SN码不能为空", trigger: 'blur' },
+          { required: true, message: "电脑SN码不能为空", trigger: "blur" },
         ],
         assetNum: [
           { required: true, message: "资产编号不能为空", trigger: "blur" },
@@ -190,13 +208,15 @@ export default {
       editDialogVisible: false,
       // 查询到的电脑信息
       editForm: {
-        comSn: "",
+        id: "",
         assetNum: "",
-        comType: "",
-        comName: "",
-        comCpu: "",
-        comMemory: "",
-        employeeName: "",
+        assetName: "",
+        unitPrice: "",
+        producer: "",
+        productionData: "",
+        storageTime: "",
+        purchaser: "",
+        assetType: "",
       },
       // 修改电脑信息表单规则
       editFormRules: {},
@@ -212,36 +232,48 @@ export default {
     //获取所有资产类型
     getAssetTypeList() {
       let _this = this;
-      axios.get('/asset/type/getAssetTypeList')
+      asset
+        .getAssetType()
         .then((response) => {
           console.log(response);
-          if(response.data.code == 400){ //请求错误
+          if (response.data.code == 400) {
+            //请求错误
             this.$message.error(response.data.message);
-          }else{
-              //将查出来的资产类型数组和assetTypeOptions合并
-              _this.assetTypeOptions = _this.assetTypeOptions.concat(response.data.data);
+          } else {
+            //将查出来的资产类型数组和assetTypeOptions合并
+            _this.assetTypeOptions = _this.assetTypeOptions.concat(
+              response.data.data
+            );
+            _this.assetTypeList = response.data.data;
           }
-      })
-      .catch((error) => {
-        console.log(error); //异常
-      });
+        })
+        .catch((error) => {
+          console.log(error); //异常
+        });
     },
     //获取资产列表
     async getAssetList() {
-        //用于做请求参数的query
-        let query = {
-          "keyword": this.searchData,
-          "assetType" : this.searchAssetType,
-          "currentPage" : this.currentPage,
-          "pageSize" : this.pageSize
-        };
+      //用于做请求参数的query
+      let query = {
+        keyword: this.searchData,
+        assetType: this.searchAssetType,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+      };
+      let _this = this;
       console.log(query);
-      axios.post('/asset/management/info/searchAssetByCondition',query)
+      asset
+        .getAsset(query)
         .then((response) => {
-          if(response.data.code == 400){ //请求错误
+          if (response.data.code == 400) {
+            //请求错误
             this.$message.error(response.data.message);
-          }else{
+          } else {
+            let result = response.data.data;
+            _this.list = result.list;
+            _this.total = result.total;
             console.log(response.data.message);
+            console.log(response.data.data);
           }
         })
         .catch((error) => {
@@ -265,13 +297,14 @@ export default {
 
     //展示修改电脑信息对话框
     async showEditDialog(row) {
-      this.editForm.comSn = row.comSn;
       this.editForm.assetNum = row.assetNum;
-      this.editForm.comType = row.comType;
-      this.editForm.comName = row.comName;
-      this.editForm.comCpu = row.comCpu;
-      this.editForm.comMemory = row.comMemory;
-      this.editForm.employeeName = row.employeeName;
+      this.editForm.assetName = row.assetName;
+      this.editForm.unitPrice = row.unitPrice;
+      this.editForm.producer = row.producer;
+      this.editForm.productionData = row.productionData;
+      this.editForm.storageTime = row.storageTime;
+      this.editForm.purchaser = row.purchaser;
+      this.editForm.assetType = row.assetType;
       this.editDialogVisible = true;
     },
     // 监听添加电脑对话框的关闭事件
@@ -282,17 +315,20 @@ export default {
     addComputer() {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) return;
-        // 发起添加用户的网络请求
-        // const { data: res } = await this.$http.post("users", this.addForm);
-        // console.log(res);
-        // if (res.meta.status !== 201) {
-        //   this.$message("添加用户失败！");
-        // }
-        this.$message("添加电脑成功");
-        //隐藏添加用户的对话框
-        this.addDialogVisible = false;
-        // 重新获取用户表单数据
-        //this.getList();
+        asset
+          .addAsset(this.addForm)
+          .then((response) => {
+            if (response.data.code == 400) {
+              this.$message.error(response.data.message);
+            } else {
+              this.$message.success(response.data.message);
+              this.addDialogVisible = false;
+              this.getAssetList();
+            }
+          })
+          .catch((error) => {
+          console.log(error); //异常
+        });
       });
     },
     // 监听修改电脑对话框的关闭事件
@@ -301,26 +337,26 @@ export default {
     },
     // 修改电脑信息并提交
     editComputerInfo() {
-      this.$refs.editFormRef.validate(async (valid) => {
-        if (!valid) return;
-        // 发起修改电脑信息的网络请求
-        // const { data: res } = await this.$http.put(
-        //   "users/" + this.editForm.id,
-        //   {
-        //     email: this.editForm.email,
-        //     mobile: this.editForm.mobile,
-        //   }
-        // );
-        // console.log(res);
-        // if (res.meta.status !== 200) {
-        //   return this.$message.error("更新电脑信息失败！");
-        // }
-        //隐藏修改电脑信息的对话框
-        this.editDialogVisible = false;
-        // 刷新数据列表
-        this.getList();
-        this.$message.success("更新电脑信息成功");
-      });
+      asset
+        .updateAsset({
+          unitPrice: this.editForm.unitPrice,
+          producer: this.editForm.producer,
+          productionData: this.editForm.productionData,
+          storageTime: this.editForm.storageTime,
+          purchaser: this.editForm.purchaser,
+          assetType: this.editForm.assetType,
+        })
+        .then((response) => {
+          if (response.data.code == 400) {
+            return this.$message.error("修改失败：" + response.data.message);
+          }
+          this.$message.success("修改成功");
+          this.editDialogVisible = false;
+          this.getAssetList();
+        })
+        .catch((error) => {
+          console.log(error); //异常
+        });
     },
     // 根据电脑sn码删除电脑
     async removeComputerById(comSN) {
