@@ -1,15 +1,24 @@
 import request from '../utils/request'
 
-export function accountfindall(){
+export function accountfindall(page){
     return request({
         url: 'http://localhost:8003/sys/account/findall',
-        method: 'get'
+        method: 'post',
+        data:
+            page
     })
 }
 
 export function accountfindbyid(accountId){
     return request({
         url: 'http://localhost:8003/sys/account/findbyid/'+accountId,
+        method: 'get'
+    })
+}
+
+export function accountdelete(accountId){
+    return request({
+        url: 'http://localhost:8003/sys/account/delete/'+accountId,
         method: 'get'
     })
 }

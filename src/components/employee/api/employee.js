@@ -34,12 +34,15 @@ export function employeeadd(employee){
     })
 }
 
-export function employeefindlike(employee){
+export function employeefindlike(employee,page){
     return request({
         url: 'http://localhost:8003/sys/employee/findlike',
         method: 'post',
         data:
-            employee
+            {
+                employee,
+                page
+            }   
     })
 }
 

@@ -27,11 +27,12 @@ export function  employeeDistributeupdate(employeeDistribute){
     })
 }
 
-export function  employeeDistributefindlike(employeeId,jobName,departmentName){
+export function  employeeDistributefindlike(employeeDistribute){
     return request({
-        url: 'http://localhost:8003/sys/employeedistribute/findlike'+employeeId&jobName&departmentName,
-        method: 'get',
-       
+        url: 'http://localhost:8003/sys/employeedistribute/findlike',
+        method: 'post',
+        data:
+            employeeDistribute
     })
 }
 

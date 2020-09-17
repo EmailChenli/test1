@@ -1,5 +1,9 @@
 <template>
       <el-main>
+        <el-card>
+          <div slot="header" class="card-header-text">
+            <span>部门信息列表</span>
+          </div>
          <div  style="height=800px;">
             <el-form :model="QueryForm" ref="QueryForm" label-width="100px" class="demo-ruleForm" size="mini">
              <el-row>
@@ -103,6 +107,7 @@
 
                 </el-pagination>
         </el-footer>
+        </el-card>
       </el-main>
     
 </template>

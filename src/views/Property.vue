@@ -63,6 +63,11 @@ export default {
       //菜单数据
       menuList: [
         {
+          path: "/property/propertyList",
+          name: "资产列表",
+          icon: "el-icon-s-marketing",
+        },
+        {
           path: "/property/computer",
           name: "电脑管理",
           icon: "el-icon-s-platform",
