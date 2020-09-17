@@ -1,5 +1,9 @@
 <template>
       <el-main>
+        <el-card>
+          <div slot="header" class="card-header-text">
+            <span>职位信息列表</span>
+          </div>
         <el-form :model="QueryForm" ref="QueryForm" label-width="100px" class="demo-ruleForm" size="mini">
             <el-row>
                 <el-col style="width: 250px;">
@@ -113,8 +117,9 @@
                   :total="QueryForm.job.length">
 
                 </el-pagination>
+                
         </el-footer>
-      
+        </el-card>
       </el-main>
 </template>
 

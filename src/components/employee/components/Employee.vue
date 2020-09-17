@@ -264,7 +264,7 @@ export default {
     employeefindlike() {
       this.modifyForm.employeeId = this.QueryForm.employeeId;
       if (this.modifyForm.employeeId == 0) {
-        employeefindall(this.QueryForm.page).then((res) => {
+        employeefindall(this.modifyForm,this.QueryForm.page).then((res) => {
           this.QueryForm.employee = res.data.data;
           this.QueryForm.requestResult = true;
         });
