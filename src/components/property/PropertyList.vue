@@ -9,17 +9,17 @@
         <el-form-item class="form-item-layout">
           <el-input
             v-model="searchData"
-            name="searchCom"
+            name="searchAsset"
             placeholder="资产编号/生产厂商/购买人.."
             autocomplete="off"
           />
         </el-form-item>
         <!--资产类型下拉框-->
         <el-form-item class="form-item-layout select-box">
-          <el-select name="assetType" v-model="searchAssetType">
+          <el-select v-model="searchAssetType">
             <el-option
-              v-for="(item,key) in assetTypeOptions"
-              :key="key"
+              v-for="(item,index) in assetTypeOptions"
+              :key="index+''"
               :label="item.assetTypeName"
               v-bind:value="item.typeId"
             ></el-option>
@@ -29,13 +29,13 @@
           <el-button type="primary" icon="el-icon-search" @click="getAssetList()">查询</el-button>
         </el-form-item>
         <el-form-item class="form-item-layout" style="float: right; margin-right: 0;">
-          <el-button type="primary" @click="addDialogVisible=true">添加电脑</el-button>
+          <el-button type="primary" @click="addDialogVisible=true">添加资产</el-button>
         </el-form-item>
       </el-form>
 
-      <!-- 电脑信息列表 -->
+      <!-- 资产信息列表 -->
       <el-table
-        :data="list"
+        :data="assetInfoList"
         border
         style="width: 100%;"
         fit
@@ -54,7 +54,7 @@
         <el-table-column prop="purchaser" label="购买人" :resizable="false"></el-table-column>
         <el-table-column prop="assetTypeName" label="资产类型" :resizable="false"></el-table-column>
         <el-table-column label="操作" width="176" :resizable="false">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-button
               type="primary"
               size="mini"
@@ -67,7 +67,7 @@
               size="mini"
               icon="el-icon-delete"
               style="margin-left: 3px; font-size: 10px"
-              @click="removeComputerById(scope.row.sid)"
+              @click="deleteAssetInfo(scope.row.id)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -86,9 +86,9 @@
       ></el-pagination>
     </el-card>
 
-    <!--添加电脑对话框-->
-    <el-dialog title="添加电脑" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+    <!--添加资产对话框-->
+    <el-dialog title="添加资产" :visible.sync="addDialogVisible" width="35%" @close="addDialogClosed" top="5vh" center>
+      <el-form :model="addForm" :rules="addFormRules" ref="addAssetForm" label-width="100px">
         <el-form-item label="资产编号" prop="assetNum">
           <el-input v-model="addForm.assetNum"></el-input>
         </el-form-item>
@@ -102,19 +102,19 @@
           <el-input v-model="addForm.producer"></el-input>
         </el-form-item>
         <el-form-item label="生产日期" prop="productionData">
-          <el-input v-model="addForm.productionData"></el-input>
+          <el-date-picker type="date" placeholder="选择日期" v-model="addForm.productionDate" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="入库时间" prop="storageTime">
-          <el-input v-model="addForm.storageTime"></el-input>
+          <el-date-picker type="date" placeholder="选择日期" v-model="addForm.storageTime" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="购买人" prop="purchaser">
           <el-input v-model="addForm.purchaser"></el-input>
         </el-form-item>
-        <el-form-item label="资产类型" prop="assetType">
-          <el-select name="assetType" v-model="addForm.currentAssetType">
+        <el-form-item label="资产类型" prop="assetTypeId">
+          <el-select v-model="addForm.assetTypeId" placeholder="请选择资产类型" style="float: left;">
             <el-option
-              v-for="(item,key) in assetTypeList"
-              :key="key"
+              v-for="(item,index) in assetTypeList"
+              :key="index+''"
               :label="item.assetTypeName"
               v-bind:value="item.typeId"
             ></el-option>
@@ -122,23 +122,14 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="addDialogVisible">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addComputer">确 定</el-button>
+        <el-button type="primary" @click="addAsset" class="dialog-btn">添加</el-button>
       </span>
     </el-dialog>
-    <!--修改电脑信息对话框-->
-    <el-dialog
-      title="修改资产信息"
-      :visible.sync="editDialogVisible"
-      width="50%"
-      @close="editDialogClosed"
-    >
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+    <!--修改资产信息对话框-->
+    <el-dialog title="修改资产信息" :visible.sync="editDialogVisible" width="35%" @close="editDialogClosed" top="5vh" center>
+      <el-form :model="editForm" :rules="editFormRules" ref="editAssetForm" label-width="100px">
         <el-form-item label="资产编号" prop="assetNum">
           <el-input v-model="editForm.assetNum" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="资产名称" prop="assetName">
-          <el-input v-model="editForm.assetName"></el-input>
         </el-form-item>
         <el-form-item label="单价" prop="unitPrice">
           <el-input v-model="editForm.unitPrice"></el-input>
@@ -146,28 +137,23 @@
         <el-form-item label="生产厂商" prop="producer">
           <el-input v-model="editForm.producer"></el-input>
         </el-form-item>
-        <el-form-item label="生产日期" prop="productionData">
-          <el-input v-model="editForm.productionData"></el-input>
+        <el-form-item label="生产日期" prop="productionDate">
+          <el-date-picker type="date" placeholder="选择日期" v-model="editForm.productionDate" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="入库时间" prop="storageTime">
-          <el-input v-model="editForm.storageTime"></el-input>
+          <el-date-picker type="date" placeholder="选择日期" v-model="editForm.storageTime" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="购买人" prop="purchaser">
           <el-input v-model="editForm.purchaser"></el-input>
         </el-form-item>
-        <el-form-item label="资产类型" prop="assetType">
-          <el-input v-model="editForm.assetType"></el-input>
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editComputerInfo">确 定</el-button>
+        <el-button type="primary" @click="editAsset" class="dialog-btn">修改</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
-// import axios from "axios";
 import asset from "@/api/property/asset.js";
 
 export default {
@@ -175,34 +161,24 @@ export default {
     return {
       currentPage: 1, //当前页
       pageSize: 10, //每页记录数
-      list: [], //查询之后接口返回集合
       total: 0, //总记录数
-      assetTypeList: null,
+      assetInfoList: [], //资产信息集合
       searchData: "", //查询框的数据
-      searchAssetType: "0", //资产类型栏被选中的值，默认为0，代表选择全部
+      searchAssetType: "0", //查询资产类型栏被选中的值，默认为0，代表选择全部
       assetTypeOptions: [{ assetTypeName: "全部", typeId: "0" }],
-      //控制添加电脑对话框的显示与隐藏
+      assetTypeList: [],  //资产类型集合
+      //控制添加资产对话框的显示与隐藏
       addDialogVisible: false,
-      // 添加电脑表单数据对象
-      addForm: {
-        currentAssetType: "请选择", // 当前选中的类型
-        assetNum: "",
-        assetName: "",
-        unitPrice: "",
-        producer: "",
-        productionData: "",
-        storageTime: "",
-        purchaser: "",
-        assetType: "",
-      },
-      // 添加电脑表单验证规则
+      // 添加资产表单数据对象
+      addForm: {},
+      // 添加资产表单验证规则
       addFormRules: {
-        comSn: [
-          { required: true, message: "电脑SN码不能为空", trigger: "blur" },
-        ],
         assetNum: [
           { required: true, message: "资产编号不能为空", trigger: "blur" },
         ],
+        assetTypeId: [
+          { required: true, message: "请选择资产类型！", trigger: "blur" },
+        ]
       },
       // 控制修改电脑信息对话框的现实与隐藏
       editDialogVisible: false,
@@ -210,16 +186,18 @@ export default {
       editForm: {
         id: "",
         assetNum: "",
-        assetName: "",
         unitPrice: "",
         producer: "",
-        productionData: "",
+        productionDate: "",
         storageTime: "",
-        purchaser: "",
-        assetType: "",
+        purchaser: ""
       },
       // 修改电脑信息表单规则
-      editFormRules: {},
+      editFormRules: {
+        assetNum: [
+          { required: true },
+        ]
+      }
     };
   },
   created() {
@@ -230,7 +208,7 @@ export default {
   },
   methods: {
     //获取所有资产类型
-    getAssetTypeList() {
+    async getAssetTypeList() {
       let _this = this;
       asset
         .getAssetType()
@@ -244,7 +222,9 @@ export default {
             _this.assetTypeOptions = _this.assetTypeOptions.concat(
               response.data.data
             );
+            //赋值给资产类型集合
             _this.assetTypeList = response.data.data;
+            console.log(_this.assetTypeList);
           }
         })
         .catch((error) => {
@@ -253,6 +233,7 @@ export default {
     },
     //获取资产列表
     async getAssetList() {
+      let _this = this;
       //用于做请求参数的query
       let query = {
         keyword: this.searchData,
@@ -260,8 +241,7 @@ export default {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
       };
-      let _this = this;
-      console.log(query);
+      //console.log(query);
       asset
         .getAsset(query)
         .then((response) => {
@@ -270,10 +250,10 @@ export default {
             this.$message.error(response.data.message);
           } else {
             let result = response.data.data;
-            _this.list = result.list;
+            _this.assetInfoList = result.list;
             _this.total = result.total;
+            //打印结果信息
             console.log(response.data.message);
-            console.log(response.data.data);
           }
         })
         .catch((error) => {
@@ -295,25 +275,26 @@ export default {
       this.getAssetList();
     },
 
-    //展示修改电脑信息对话框
+    //展示修改资产信息对话框
     async showEditDialog(row) {
+      //console.log(row.id);
+      //初始化表单
+      this.editForm.id = row.id;
       this.editForm.assetNum = row.assetNum;
-      this.editForm.assetName = row.assetName;
       this.editForm.unitPrice = row.unitPrice;
       this.editForm.producer = row.producer;
-      this.editForm.productionData = row.productionData;
+      this.editForm.productionDate = row.productionDate;
       this.editForm.storageTime = row.storageTime;
       this.editForm.purchaser = row.purchaser;
-      this.editForm.assetType = row.assetType;
       this.editDialogVisible = true;
     },
-    // 监听添加电脑对话框的关闭事件
+    // 监听添加资产对话框的关闭事件
     addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
+      this.$refs.addAssetForm.resetFields();
     },
-    // 点击确定按钮，添加电脑
-    addComputer() {
-      this.$refs.addFormRef.validate(async (valid) => {
+    // 点击确定按钮，添加资产
+    addAsset() {
+      this.$refs.addAssetForm.validate(async (valid) => {
         if (!valid) return;
         asset
           .addAsset(this.addForm)
@@ -333,53 +314,66 @@ export default {
     },
     // 监听修改电脑对话框的关闭事件
     editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
+      this.$refs.editAssetForm.resetFields();
     },
     // 修改电脑信息并提交
-    editComputerInfo() {
-      asset
-        .updateAsset({
-          unitPrice: this.editForm.unitPrice,
-          producer: this.editForm.producer,
-          productionData: this.editForm.productionData,
-          storageTime: this.editForm.storageTime,
-          purchaser: this.editForm.purchaser,
-          assetType: this.editForm.assetType,
-        })
-        .then((response) => {
-          if (response.data.code == 400) {
-            return this.$message.error("修改失败：" + response.data.message);
-          }
-          this.$message.success("修改成功");
-          this.editDialogVisible = false;
-          this.getAssetList();
-        })
-        .catch((error) => {
-          console.log(error); //异常
-        });
+    editAsset() {
+      this.$refs.editAssetForm.validate(async (valid) => {
+        if (!valid) return;
+        // else {
+        //   console.log(this.editForm);
+        //   return false;
+        // }
+        asset
+          .updateAsset(this.editForm)
+          .then((response) => {
+            if (response.data.code == 400) {
+              return this.$message.error(response.data.message);
+            }else {
+              this.$message.success(response.data.message);
+              this.editDialogVisible = false;
+              this.getAssetList();
+            }
+          })
+          .catch((error) => {
+            console.log(error); //异常
+          });
+      });
     },
-    // 根据电脑sn码删除电脑
-    async removeComputerById(comSN) {
-      console.log(comSN);
+    // 根据资产ID删除资产
+    async deleteAssetInfo(assetId) {
+      console.log(assetId);
       //询问用户是否删除数据
-      const confirmRusult = await this.$confirm(
+      const flag = await this.$confirm(
         "此操作将永久删除该电脑信息, 是否继续?",
-        "提示",
+        "温馨提示",
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "error",
         }
-      ).catch((err) => err);
-      if (confirmRusult !== "confirm") {
-        return this.$message.info("已取消删除");
-      }
-      // const { data: res } = await this.$http.delete("users/" + id);
-      // if (res.meta.status !== 200) {
-      //   return this.$message.error("删除用户失败！");
+      ).then(()=>{ //confirm
+        console.log("开始请求");
+        asset
+          .deleteAsset(assetId)
+          .then((response) => {
+            if (response.data.code === 400) {
+              return this.$message.error(response.data.message);
+            }else {
+              this.$message.success(response.data.message);
+              this.getAssetList();
+            }
+          })
+          .catch((error) => {
+            console.log(error); //异常
+          });
+      }).catch(()=>{
+        console.log("取消删除");
+      });
+      //点击确认
+      // if (flag === "confirm"){
+      //
       // }
-      this.$message.success("删除用户成功！");
-      this.getList();
     },
     //修改表头样式
     headerCellStyle() {
@@ -416,6 +410,11 @@ export default {
 
 .card-header-text {
   text-align: left;
+}
+
+/* 弹出框样式 */
+.dialog-btn{
+  width: 200px;
 }
 </style>
 

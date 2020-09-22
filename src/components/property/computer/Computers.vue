@@ -9,23 +9,22 @@
         <el-form-item class="form-item-layout">
           <el-input
             v-model="searchData"
-            name="searchCom"
-            placeholder="电脑编号/品牌/持有人.."
+            placeholder="资产编号/电脑名称/类型.."
             autocomplete="off"
           />
         </el-form-item>
         <el-form-item class="form-item-layout select-box">
-          <el-select name="comStatus" v-model="searchStatus">
+          <el-select v-model="searchStatus">
             <el-option
-              v-for="(item,key) in statusOptions"
-              :key="key"
+              v-for="(item,index) in statusOptions"
+              :key="index+''"
               :label="item.name"
               v-bind:value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="form-item-layout">
-          <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="getComputerList()">查询</el-button>
         </el-form-item>
         <el-form-item class="form-item-layout" style="float: right; margin-right: 0;">
           <el-button type="primary" @click="addDialogVisible=true">添加电脑</el-button>
@@ -34,23 +33,26 @@
 
       <!-- 电脑信息列表 -->
       <el-table
-        :data="list"
+        :data="computerList"
         border
         style="width: 100%;"
+        fit
         :header-cell-style="headerCellStyle"
         :cell-style="cellStyle"
+        :show-header="total > 0"
+        empty-text="No Data"
       >
         <!-- <el-table-column type="index" label="序号"></el-table-column> -->
-        <el-table-column prop="comSn" label="电脑SN码" width="175" :resizable="false"></el-table-column>
+        <el-table-column prop="comSn" label="电脑SN码" width="150" :resizable="false"></el-table-column>
         <el-table-column prop="assetNum" label="资产编号" :resizable="false"></el-table-column>
         <el-table-column prop="comType" label="电脑类型" :resizable="false"></el-table-column>
         <el-table-column prop="comName" label="电脑名称" :resizable="false"></el-table-column>
         <el-table-column prop="comCpu" label="电脑处理器" :resizable="false"></el-table-column>
         <el-table-column prop="comMemory" label="电脑内存" :resizable="false"></el-table-column>
-        <el-table-column prop="employeeName" label="持有人" :resizable="false"></el-table-column>
-        <el-table-column prop="comStatus" label="状态" :resizable="false"></el-table-column>
+        <el-table-column prop="holderName" label="持有人" :formatter="holderNameFormat" :resizable="false"></el-table-column>
+        <el-table-column prop="comStatus" label="状态" :formatter="statusFormat" :resizable="false"></el-table-column>
         <el-table-column label="操作" width="176" :resizable="false">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-button
               type="primary"
               size="mini"
@@ -63,7 +65,7 @@
               size="mini"
               icon="el-icon-delete"
               style="margin-left: 3px; font-size: 10px"
-              @click="removeComputerById(scope.row.sid)"
+              @click="removeComputerById(scope.row.comSn)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -72,11 +74,13 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="page"
-        :page-size="limit"
-        :page-sizes="[5, 10, 12,15]"
-        layout="total, sizes, prev, pager, next, jumper"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        background
+        :page-sizes="[5,10,12,15]"
+        layout="total, sizes, prev, pager, next"
         :total="total"
+        v-show="total>0"
       ></el-pagination>
     </el-card>
 
@@ -144,20 +148,21 @@
     </el-dialog>
   </div>
 </template>
+
 <script>
-export default {
+  //引入电脑api
+  import computer from "@/api/property/computer.js";
+  export default {
   data() {
     return {
-      page: 1, //当前页
-      limit: 10, //每页记录数
-      shopQuery: {}, //条件封装对象
-      list: [], //查询之后接口返回集合
-      total: 0, //总记录数
-      src: "",
+      currentPage: 1, //当前页
+      pageSize: 10, //每页记录数
+      total: 1, //总记录数
+      computerList: [], //查询之后接口返回集合
       searchData: "",
-      searchStatus: "all", //状态栏被选中的值，默认为all
+      searchStatus: "-1", //状态栏被选中的值，默认为all
       statusOptions: [
-        { name: "全部", value: "all" },
+        { name: "全部", value: "-1" },
         { name: "空闲", value: "0" },
         { name: "被拥有", value: "1" },
       ],
@@ -198,49 +203,52 @@ export default {
     };
   },
   created() {
-    this.getList();
+    //获取电脑列表
+    this.getComputerList();
   },
   methods: {
     //电脑信息列表
-    async getList(page = 1) {
-      // console.log(this.searchStatus);
-      this.page = page;
-      this.list = [
-        {
-          comSn: "sijij",
-          assetNum: "东信123",
-          comType: "笔记本",
-          comName: "戴尔灵越5000",
-          comCpu: "i7",
-          comMemory: "16G",
-          employeeName: "bb" != null ? "小白" : "无",
-          comStatus: "被拥有",
-        },
-      ];
-      //console.log('1233');
-      // const { data: res } = await this.$http.post(
-      //   "/orderingSystem/shop/pageShop/${page}/${limit}", {
-      //     page,limit,shopQuery
-      //   });
-      // if (res.meta.status !== 200)
-      //   return this.$message.error("获取用户表单失败！");
-      // this.list = response.data.rows;
-      // this.total = response.data.total;
-      // this.src = response.data.rows.cover;
-      // console.log(this.list);
-      // console.log(this.total);
+    async getComputerList() {
+      let _this = this;
+      //用于做请求参数的query
+      let query = {
+        keyword: this.searchData,
+        comStatus: this.searchStatus,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+      };
+      //console.log(query);
+      computer
+        .getComputer(query)
+        .then((response) => {
+          if (response.data.code == 400) {
+            //请求错误
+            this.$message.error(response.data.message);
+          } else {
+            let result = response.data.data;
+            console.log(result);
+            _this.computerList = result.list;
+            _this.total = result.total;
+            //打印结果信息
+            console.log(response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error); //异常
+        });
     },
-    // 监听pagesize改变
+    //分页监听事件
+    // 监听每页记录数pageSize改变的时间
     handleSizeChange(newSize) {
-      // console.log(newSize)
-      this.page = newSize;
-      this.getList();
+      console.log(newSize);
+      this.pageSize = newSize;
+      this.getComputerList();
     },
     // 监听页码值改变的事件
     handleCurrentChange(newPage) {
       console.log(newPage);
-      this.limit = newPage;
-      this.getList();
+      this.currentPage = newPage;
+      this.getComputerList();
     },
     //展示修改电脑信息对话框
     async showEditDialog(row) {
@@ -252,6 +260,22 @@ export default {
       this.editForm.comMemory = row.comMemory;
       this.editForm.employeeName = row.employeeName;
       this.editDialogVisible = true;
+    },
+    //对状态进行格式化输出处理
+    statusFormat(row, column) {
+      if (row.comStatus === 1) {
+        return '被拥有'
+      } else if(row.comStatus === 0) {
+        return '空闲'
+      }
+    },
+    //对持有人进行格式化输出处理
+    holderNameFormat(row, column) {
+      if (row.holderName === null) {
+        return '无'
+      }else {
+        return row.holderName;
+      }
     },
     // 监听添加电脑对话框的关闭事件
     addDialogClosed() {
