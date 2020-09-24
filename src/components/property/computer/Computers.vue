@@ -24,10 +24,10 @@
           </el-select>
         </el-form-item>
         <el-form-item class="form-item-layout">
-          <el-button type="primary" icon="el-icon-search" @click="getComputerList()">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="getComputerList()">查 询</el-button>
         </el-form-item>
         <el-form-item class="form-item-layout" style="float: right; margin-right: 0;">
-          <el-button type="primary" @click="addDialogVisible=true">添加电脑</el-button>
+          <el-button type="primary" @click="addDialogVisible=true">添 加</el-button>
         </el-form-item>
       </el-form>
 
@@ -65,7 +65,7 @@
               size="mini"
               icon="el-icon-delete"
               style="margin-left: 3px; font-size: 10px"
-              @click="removeComputerById(scope.row.comSn)"
+              @click="deleteComInfo(scope.row.comSn)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -85,8 +85,8 @@
     </el-card>
 
     <!--添加电脑对话框-->
-    <el-dialog title="添加电脑" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+    <el-dialog title="添加电脑" :visible.sync="addDialogVisible" width="35%" @close="addDialogClosed" top="5vh" center>
+      <el-form :model="addForm" :rules="addFormRules" ref="addComForm" label-width="100px">
         <el-form-item label="电脑SN码" prop="comSn">
           <el-input v-model="addForm.comSn"></el-input>
         </el-form-item>
@@ -107,18 +107,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="addDialogVisible">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addComputer">确 定</el-button>
+        <el-button type="primary" @click="addComputer" class="dialog-btn">添 加</el-button>
       </span>
     </el-dialog>
     <!--修改电脑信息对话框-->
-    <el-dialog
-      title="修改电脑信息"
-      :visible.sync="editDialogVisible"
-      width="50%"
-      @close="editDialogClosed"
-    >
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+    <el-dialog title="修改电脑信息" :visible.sync="editDialogVisible" width="35%" @close="editDialogClosed" top="5vh" center>
+      <el-form :model="editForm" :rules="editFormRules" ref="editComForm" label-width="100px">
         <el-form-item label="电脑SN码">
           <el-input v-model="editForm.comSn" disabled></el-input>
         </el-form-item>
@@ -137,13 +131,9 @@
         <el-form-item label="电脑内存" prop="comMemory">
           <el-input v-model="editForm.comMemory"></el-input>
         </el-form-item>
-        <el-form-item label="持有人" prop="employeeName">
-          <el-input v-model="editForm.employeeName"></el-input>
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editComputerInfo">确 定</el-button>
+        <el-button type="primary" @click="editComputer" class="dialog-btn">修 改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -158,7 +148,7 @@
       currentPage: 1, //当前页
       pageSize: 10, //每页记录数
       total: 1, //总记录数
-      computerList: [], //查询之后接口返回集合
+      computerList: [], //电脑信息集合
       searchData: "",
       searchStatus: "-1", //状态栏被选中的值，默认为all
       statusOptions: [
@@ -175,7 +165,7 @@
         comType: "",
         comName: "",
         comCpu: "",
-        comMemory: "",
+        comMemory: ""
       },
       // 添加电脑表单验证规则
       addFormRules: {
@@ -195,8 +185,7 @@
         comType: "",
         comName: "",
         comCpu: "",
-        comMemory: "",
-        employeeName: "",
+        comMemory: ""
       },
       // 修改电脑信息表单规则
       editFormRules: {},
@@ -221,7 +210,7 @@
       computer
         .getComputer(query)
         .then((response) => {
-          if (response.data.code == 400) {
+          if (response.data.code === 400) {
             //请求错误
             this.$message.error(response.data.message);
           } else {
@@ -250,6 +239,7 @@
       this.currentPage = newPage;
       this.getComputerList();
     },
+
     //展示修改电脑信息对话框
     async showEditDialog(row) {
       this.editForm.comSn = row.comSn;
@@ -258,9 +248,9 @@
       this.editForm.comName = row.comName;
       this.editForm.comCpu = row.comCpu;
       this.editForm.comMemory = row.comMemory;
-      this.editForm.employeeName = row.employeeName;
       this.editDialogVisible = true;
     },
+
     //对状态进行格式化输出处理
     statusFormat(row, column) {
       if (row.comStatus === 1) {
@@ -277,76 +267,89 @@
         return row.holderName;
       }
     },
+
     // 监听添加电脑对话框的关闭事件
     addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
+      this.$refs.addComForm.resetFields();
     },
     // 点击确定按钮，添加电脑
     addComputer() {
-      this.$refs.addFormRef.validate(async (valid) => {
+      this.$refs.addComForm.validate(async (valid) => {
         if (!valid) return;
-        // 发起添加用户的网络请求
-        // const { data: res } = await this.$http.post("users", this.addForm);
-        // console.log(res);
-        // if (res.meta.status !== 201) {
-        //   this.$message("添加用户失败！");
-        // }
-        this.$message("添加电脑成功");
-        //隐藏添加用户的对话框
-        this.addDialogVisible = false;
-        // 重新获取用户表单数据
-        this.getrList();
+        computer
+          .addComputer(this.addForm)
+          .then((response) => {
+            if (response.data.code == 400) {
+              this.$message.error(response.data.message);
+            } else {
+              this.$message.success(response.data.message);
+              this.addDialogVisible = false;
+              this.getComputerList();
+            }
+          })
+          .catch((error) => {
+            console.log(error); //异常
+          });
       });
     },
     // 监听修改电脑对话框的关闭事件
     editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
+      this.$refs.editComForm.resetFields();
     },
     // 修改电脑信息并提交
-    editComputerInfo() {
-      this.$refs.editFormRef.validate(async (valid) => {
+    editComputer() {
+      this.$refs.editComForm.validate(async (valid) => {
         if (!valid) return;
-        // 发起修改电脑信息的网络请求
-        // const { data: res } = await this.$http.put(
-        //   "users/" + this.editForm.id,
-        //   {
-        //     email: this.editForm.email,
-        //     mobile: this.editForm.mobile,
-        //   }
-        // );
-        // console.log(res);
-        // if (res.meta.status !== 200) {
-        //   return this.$message.error("更新电脑信息失败！");
+        // else {
+        //   console.log(this.editForm);
+        //   return false;
         // }
-        //隐藏修改电脑信息的对话框
-        this.editDialogVisible = false;
-        // 刷新数据列表
-        this.getList();
-        this.$message.success("更新电脑信息成功");
+        computer
+          .updateComputer(this.editForm)
+          .then((response) => {
+            if (response.data.code == 400) {
+              this.$message.error(response.data.message);
+            }else {
+              this.$message.success(response.data.message);
+              this.editDialogVisible = false;
+              this.getComputerList();
+            }
+          })
+          .catch((error) => {
+            console.log(error); //异常
+          });
       });
     },
     // 根据电脑sn码删除电脑
-    async removeComputerById(comSN) {
-      console.log(comSN);
+    async deleteComInfo(comSn) {
+      console.log(comSn);
       //询问用户是否删除数据
-      const confirmRusult = await this.$confirm(
+      await this.$confirm(
         "此操作将永久删除该电脑信息, 是否继续?",
-        "提示",
+        "温馨提示",
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "error",
         }
-      ).catch((err) => err);
-      if (confirmRusult !== "confirm") {
-        return this.$message.info("已取消删除");
-      }
-      // const { data: res } = await this.$http.delete("users/" + id);
-      // if (res.meta.status !== 200) {
-      //   return this.$message.error("删除用户失败！");
-      // }
-      this.$message.success("删除用户成功！");
-      this.getList();
+      ).then(()=>{ //confirm
+        console.log("开始请求");
+        computer
+          .deleteComputer(comSn)
+          .then((response) => {
+            if (response.data.code === 400) {
+              this.$message.error(response.data.message);
+            }else {
+              this.$message.success(response.data.message);
+              this.getComputerList();
+            }
+          })
+          .catch((error) => {
+            console.log(error); //异常
+          });
+      }).catch(()=>{
+        console.log("取消删除");
+      });
     },
     //修改表头样式
     headerCellStyle() {
@@ -383,6 +386,12 @@
 
 .card-header-text {
   text-align: left;
+}
+
+/* 弹出框样式 */
+/*按钮*/
+.dialog-btn{
+  width: 200px;
 }
 </style>
 

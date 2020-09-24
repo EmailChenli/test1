@@ -26,10 +26,10 @@
           </el-select>
         </el-form-item>
         <el-form-item class="form-item-layout">
-          <el-button type="primary" icon="el-icon-search" @click="getAssetList()">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="getAssetList()">查 询</el-button>
         </el-form-item>
         <el-form-item class="form-item-layout" style="float: right; margin-right: 0;">
-          <el-button type="primary" @click="addDialogVisible=true">添加资产</el-button>
+          <el-button type="primary" @click="addDialogVisible=true">添 加</el-button>
         </el-form-item>
       </el-form>
 
@@ -122,7 +122,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="addDialogVisible">
-        <el-button type="primary" @click="addAsset" class="dialog-btn">添加</el-button>
+        <el-button type="primary" @click="addAsset" class="dialog-btn">添 加</el-button>
       </span>
     </el-dialog>
     <!--修改资产信息对话框-->
@@ -148,7 +148,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="editAsset" class="dialog-btn">修改</el-button>
+        <el-button type="primary" @click="editAsset" class="dialog-btn">修 改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -170,7 +170,16 @@ export default {
       //控制添加资产对话框的显示与隐藏
       addDialogVisible: false,
       // 添加资产表单数据对象
-      addForm: {},
+      addForm: {
+        assetNum: "",
+        assetName: "",
+        unitPrice: "",
+        producer: "",
+        productionDate: "",
+        storageTime: "",
+        purchaser: "",
+        assetTypeId: ""
+      },
       // 添加资产表单验证规则
       addFormRules: {
         assetNum: [
@@ -328,7 +337,7 @@ export default {
           .updateAsset(this.editForm)
           .then((response) => {
             if (response.data.code == 400) {
-              return this.$message.error(response.data.message);
+              this.$message.error(response.data.message);
             }else {
               this.$message.success(response.data.message);
               this.editDialogVisible = false;
@@ -344,8 +353,8 @@ export default {
     async deleteAssetInfo(assetId) {
       console.log(assetId);
       //询问用户是否删除数据
-      const flag = await this.$confirm(
-        "此操作将永久删除该电脑信息, 是否继续?",
+      await this.$confirm(
+        "此操作将永久删除该资产信息, 是否继续?",
         "温馨提示",
         {
           confirmButtonText: "确定",
@@ -358,7 +367,7 @@ export default {
           .deleteAsset(assetId)
           .then((response) => {
             if (response.data.code === 400) {
-              return this.$message.error(response.data.message);
+              this.$message.error(response.data.message);
             }else {
               this.$message.success(response.data.message);
               this.getAssetList();
@@ -370,10 +379,6 @@ export default {
       }).catch(()=>{
         console.log("取消删除");
       });
-      //点击确认
-      // if (flag === "confirm"){
-      //
-      // }
     },
     //修改表头样式
     headerCellStyle() {
@@ -413,6 +418,7 @@ export default {
 }
 
 /* 弹出框样式 */
+/*按钮*/
 .dialog-btn{
   width: 200px;
 }

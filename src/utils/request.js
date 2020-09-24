@@ -17,7 +17,7 @@ export function request2(config){
   const instance = axios.create({
     baseURL:"http://httpbin.org/get",
     timeout:5000
-  })
+  });
   // 发送真正的网络请求
   return instance(config)
 }
