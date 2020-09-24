@@ -1,22 +1,22 @@
 <template>
   <div class="login_container">
-    <div>
-      <span class="font">东信门户管理系统</span>
+    <div class="system-title-box">
+      <span class="system-title">东信门户管理系统</span>
     </div>
-    <div class="login_box">
-      <el-form class="login_form" :rules="loginRules" ref="loginFormRef" :model="loginForm" label-width="8px" auto-complete="on">
+    <div class="login-box">
+      <el-form class="login-form" :rules="loginRules" ref="loginFormRef" :model="loginForm" label-width="8px">
         <el-form-item prop="username">
-          <el-input class="input" v-model="loginForm.username" prefix-icon="el-icon-user" auto-complete="on" placeholder="请输入账号"></el-input>
+          <el-input class="login-input" v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input class="input" v-model="loginForm.password" :type="passwordType" auto-complete="on" placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="login">
+          <el-input class="login-input" v-model="loginForm.password" :type="passwordType" placeholder="请输入密码" prefix-icon="el-icon-lock" @keyup.enter.native="login">
             <i slot="suffix" class="el-icon-view el-input__icon" @click="showPassword"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="code">
-            <el-row :span="24">
-                <el-col :span="13">
-                    <el-input class="code" v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码" size="min" @keyup.enter.native="login"></el-input>
+        <el-form-item prop="code" style="margin-left: 59px;">
+            <el-row :span="22">
+                <el-col :span="11">
+                    <el-input class="code-input" v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码" size="min" @keyup.enter.native="login"></el-input>
                 </el-col>
                 <el-col :span="11">
                     <div class="login-code" @click="refreshCode">
@@ -40,7 +40,7 @@ export default {
   name: "userLogin",
   components: { SIdentify },
   data() {
-  
+
     return {
       // 表单数据对象
       loginForm: {
@@ -123,58 +123,58 @@ export default {
 .login_container {
   background-image: url('../assets/img/bg.png');
   background-size: cover;
-  height: 100%;
+  min-width: 1536px;
+  min-height: 762px;
 }
 
-.login_box {
-  height: 300px;
-  width: 400px;
+/* 系统名盒子 */
+.system-title-box{
+  position: relative;
+  top: 120px;
+}
+/* 系统名 */
+.system-title{
+  font-size: 60px;
+  font-weight:bold;
+  font-family: "Hiragino Sans GB", sans-serif;
+  color: #5352ed;
+}
+/* 表单盒子 */
+.login-box {
+  position: relative;
+  top: 180px;
+  height: 350px;
+  width: 450px;
   background:rgba(255, 255, 255, 0.7);
-  position: absolute;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
-
-.login_form {
-  position: absolute;
-  bottom: 18px;
-  width: 100%;
-  padding: 0 25px;
-  box-sizing: border-box;
+/* 表单 */
+.login-form {
+  padding-top: 50px;
 }
 
  /*输入框样式*/
- .input{
+ .login-input{
   width: 270px;
  }
 
  /*验证码样式*/
-.code{
+.code-input{
     width:120px;
     height:25px;
-    border:0px;
+    border:0;
 }
 .login-code{
-    width:120px;
+    width:110px;
     cursor: pointer;
 }
 
 /*登录按钮样式*/
 .btns {
   width: 60%;
-  border: 0px;
+  border: 0;
   align-self: center;
   background-color: #336699;
-}
-
-.font{
-    position: relative;
-    top: 120px;
-    font-size: 60px;
-    font-weight:bold;
-    font-family: 'Times New Roman', Times, serif;
-    color: #003366;
 }
 </style>
 
