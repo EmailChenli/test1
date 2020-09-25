@@ -79,7 +79,6 @@
           const { export_json_to_excel } = require('../../../vendor/Export2Excel');
           const tHeader = [ '员工id', '姓名', '电话', '电子邮件', '总申请次数'];
           const filterVal = ['employeeId', 'employeeName', 'employeePhone', 'employeeEmail', 'reserveTimes'];
-          const cols = [{wpx:60},{wpx:60},{wpx:100},{wpx:60}];
           const list = this.timesList;
           const data = this.formatJson(filterVal, list);
           export_json_to_excel(tHeader, data, '会议室预订次数统计');

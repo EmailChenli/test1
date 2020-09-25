@@ -5,8 +5,7 @@
             <span>员工账号信息列表</span>
           </div>
         <el-form :model="QueryForm" ref="QueryForm" label-width="100px" class="demo-ruleForm" size="mini">
-            <el-row>
-              
+            <el-row>     
                 <el-col style="width: 250px;">
                     <el-form-item label="账号ID">
                         <el-input v-model="QueryForm.accountId"></el-input>

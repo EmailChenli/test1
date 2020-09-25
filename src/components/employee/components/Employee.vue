@@ -32,10 +32,16 @@
               icon="el-icon-edit"
             >添加</el-button>
           </el-col>
+
+          <el-col :span="5">
+            <el-button type="primary" icon="document" @click="exportToExcel">导出Excel</el-button>
+          </el-col>
         </el-row>
       </el-form>
 
-      <el-header style="background-color:#C0C0C0"></el-header>
+      <el-header>
+          
+      </el-header>
 
       <div v-if="QueryForm.requestResult">
         <el-table @row-click="handleEdit" :data="QueryForm.employee" style="width: 100%">
@@ -108,7 +114,7 @@
 
       <div style="margin-top: 5px;"></div>
       <!--这个只是为了在页面上显示间隔-->
-      <el-dialog title="编辑职位" :visible.sync="QueryForm.updateButton">
+      <el-dialog title="编辑入职信息" :visible.sync="QueryForm.updateButton">
         <el-form :model="modifyForm">
           <el-form-item label="员工名" :label-width="modifyForm.formLabelWidth">
             <el-input v-model="modifyForm.employeeName" auto-complete="off"></el-input>
@@ -153,7 +159,7 @@
           next-text="下一页"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="QueryForm.currentPage"
+          :current-page="QueryForm.page.currentPage"
           :page-sizes="[15, 30, 50, 100]"
           :page-size="15"
           layout="total, sizes, prev, pager, next, jumper"
@@ -165,8 +171,8 @@
 </template>
 
 <style>
-.el-header {
-  background-color: #c1cbd8;
+.el-main .el-header {
+  background-color: #ffffff;
   color: #333;
   line-height: 60px;
 }
@@ -189,6 +195,7 @@ export default {
     return {
       msg: "",
       code: "",
+      
       // 定义一个数据集合
       QueryForm: {
         page: {
@@ -244,6 +251,9 @@ export default {
   created() {
     this.employeeall();
   },
+  updated(){
+    console.log("更新成功后");
+  },
   methods: {
     employeeall() {
       console.log(this.QueryForm.page);
@@ -259,24 +269,29 @@ export default {
       console.log(this.modifyForm);
       employeeupdate(this.modifyForm).then((res) => {
         this.QueryForm.updateButton = false;
+        employeefindall(this.QueryForm.page).then((res) => {
+          this.QueryForm.employee = res.data.data;
+          this.QueryForm.requestResult = true;
+        });
       });
     },
     employeefindlike() {
       this.modifyForm.employeeId = this.QueryForm.employeeId;
       if (this.modifyForm.employeeId == 0) {
-        employeefindall(this.modifyForm,this.QueryForm.page).then((res) => {
+        employeefindall(this.QueryForm.page).then((res) => {
           this.QueryForm.employee = res.data.data;
           this.QueryForm.requestResult = true;
         });
       } else {
         this.modifyForm.employeeName = this.QueryForm.employeeName;
-        employeefindlike(this.modifyForm).then((res) => {
+        employeefindlike(this.modifyForm,this.QueryForm.page).then((res) => {
           this.QueryForm.employee = res.data.data;
           console.log(res);
         });
       }
     },
     employeedelete() {
+      console.log(this.modifyForm.employeeId);
       employeedelete(this.modifyForm.employeeId).then((res) => {
         this.QueryForm.msgButton = true;
         this.QueryForm.deleteButton = false;
@@ -319,6 +334,26 @@ export default {
         this.QueryForm.requestResult = true;
       });
     },
-  },
+    exportToExcel() {
+        //excel数据导出
+        require.ensure([], () => {
+            const {
+                export_json_to_excel
+            } = require('@/components/employee/api/Export2Excel');
+ 
+            const tHeader = ['员工ID','员工名','身份证号码','员工学历','邮箱','居住地址','手机号码','性别','创建日期','修改日期'];
+            const filterVal = ['employeeId','employeeName', 'employeeIdcard', 'employeeEduSchool','employeeEmail','employeeAddress','employeePhone','employeeSex','createTime','modifyTime'];
+            
+            const list = this.QueryForm.employee;
+            const data = this.formatJson(filterVal, list);
+            // console.log(list);
+            // console.log(data);
+            export_json_to_excel(tHeader, data, '列表excel');
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+    }
+  }
 };
 </script>

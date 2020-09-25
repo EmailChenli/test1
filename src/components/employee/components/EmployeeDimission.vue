@@ -37,7 +37,8 @@
                 <el-table-column prop="employeeDimissionAddress" label="居住地址" width="180"></el-table-column>
                 <el-table-column prop="employeeDimissionPhone" label="手机号码" width="180"></el-table-column>
                 <el-table-column prop="employeeDimissionSex" label="性别" width="180"></el-table-column>
-                <el-table-column prop="jobId" label="职位ID" width="180"></el-table-column>
+                <el-table-column prop="jobName" label="职位名" width="180"></el-table-column>
+                <el-table-column prop="departmentName" label="部门名" width="180"></el-table-column>
                 <el-table-column prop="createTime" label="创建日期" width="180"></el-table-column>
                 <el-table-column prop="modifyTime" label="修改日期" width="180"></el-table-column>
                 <el-table-column label="操作" fixed="right" width="200px" style="float=left">
@@ -72,7 +73,7 @@
                   next-text="下一页"
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
-                  :current-page="QueryForm.currentPage"
+                  :current-page="QueryForm.page.currentPage"
                   :page-sizes="[15, 30, 50, 100]"
                   :page-size="15"
                   layout="total, sizes, prev, pager, next, jumper"
@@ -127,7 +128,8 @@ export default {
                  employeeDimissionName: '',
                  employeeDimissionPhone: '',
                  employeeDimissionSex: '',
-                 jobId: '',
+                 jobName: '',
+                 departmentName:'',
                  modifyTime: '',
                  employeeDimission: [{
                      createTime: '',
@@ -139,6 +141,8 @@ export default {
                      employeeDimissionName: '',
                      employeeDimissionPhone: '',
                      employeeDimissionSex: '',
+                     jobName: '',
+                     departmentName:'',
                      modifyTime: '',
                  }],
                  requestResult: false

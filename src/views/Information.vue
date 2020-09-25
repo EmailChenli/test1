@@ -74,7 +74,7 @@ export default {
             },
             {
               path: "/employee/list/employeeaccount",
-              name: "账号信息",
+              name: "员工账号信息",
               icon: "el-icon-menu",
             },
             {
@@ -118,7 +118,7 @@ export default {
             },
             {
               path: "/employee/system/systemaccount",
-              name: "账号信息",
+              name: "系统账号信息",
               icon: "el-icon-menu",
             },
           ],

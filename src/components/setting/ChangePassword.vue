@@ -11,8 +11,8 @@
         :rules="rules"
         label-width="100px"
       >
-        <el-form-item label="原密码" prop="password">
-          <el-input type="password" placeholder="请输入原密码" v-model="form.password"></el-input>
+        <el-form-item label="原密码" prop="oldPassword">
+          <el-input type="password" placeholder="请输入原密码" v-model="form.oldPassword"></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
           <el-input type="password" placeholder="请设置新密码" v-model="form.newPassword"></el-input>
@@ -21,19 +21,24 @@
           <el-input type="password" placeholder="请确认新密码" v-model="form.newPassword2"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="btn" type="primary" @click="onSubmit(form)">保存</el-button>
+          <el-button class="btn" type="primary" @click="changePassword">确定修改</el-button>
         </el-form-item>
       </el-form>
+      <el-dialog title="提示框" :visible.sync="msgButton">   
+              <p>{{msg}}</p>
+      </el-dialog>  
     </el-card>
   </div>
 </template>
 
 <script>
+import { changePassword } from '@/components/employee/api/login'
+
 export default {
   data() {
     //表单发送之前验证
     let validateNewPassword = (rule, value, callback) => {
-      if (value === this.form.password) {
+      if (value === this.form.oldPassword) {
         callback(new Error("新密码不能与原密码相同!"));
       } else {
         callback();
@@ -47,9 +52,16 @@ export default {
       }
     };
     return {
-      form: {},
+      msg:'',
+      msgButton:false,
+      form: {
+        oldPassword:'',
+        newPassword:'',
+        newPassword2:'',
+        accountName:''
+      },
       rules: {
-        password: [
+        oldPassword: [
           { required: true, message: "请输入原密码", trigger: "blur" },
         ],
         newPassword: [
@@ -61,10 +73,17 @@ export default {
           { validator: validateNewPassword2, trigger: "blur" },
         ],
       },
-    };
+    }
   },
   methods: {
-    onSubmit(formName) {},
+    changePassword() {
+      this.form.accountName = localStorage.getItem('info');
+      changePassword(this.form).then((res)=>{
+        console.log(res);
+        this.msg = res.data.msg;
+        this.msgButton = true;
+      })
+    },
   },
 };
 </script>

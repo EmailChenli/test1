@@ -5,74 +5,133 @@
         <span>个人信息</span>
       </div>
       <!-- 个人信息表单 -->
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <!-- <el-form ref="modifyForm" :model="modifyForm" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
-             <el-form-item label="姓名" prop="name"><el-input v-model="form.password"></el-input></el-form-item> 
+             <el-form-item label="姓名" prop="employeeName" ><el-input type="employeeName" v-model="modifyForm.employeeName"></el-input></el-form-item> 
           </el-col>
           <el-col :span="12">
-             <el-form-item label="头像" prop="avatar"><el-input v-model="form.password"></el-input></el-form-item>
+             <el-form-item label="头像" ><el-input v-model="modifyForm.employeeImg"></el-input></el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-             <el-form-item label="工号" prop="id"><el-input v-model="form.password"></el-input></el-form-item> 
+             <el-form-item label="工号" ><el-input v-model="modifyForm.employeeId"></el-input></el-form-item> 
           </el-col>
           <el-col :span="12">
-             <el-form-item label="性别" prop="sex">
-                <el-radio-group v-model="form.sex">
-                    <el-radio class="radio" label="1">男</el-radio>
-                    <el-radio class="radio" label="0">女</el-radio>
-            </el-radio-group>
+             <el-form-item label="性别" >
+                <el-radio-group v-model="modifyForm.employeeSex">
+                    <el-radio class="radio" label="男">男</el-radio>
+                    <el-radio class="radio" label="女">女</el-radio>
+                </el-radio-group>
              </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-             <el-form-item label="部门" prop="department"><el-input v-model="form.department"></el-input></el-form-item> 
+             <el-form-item label="部门" ><el-input v-model="modifyForm.departmentName"></el-input></el-form-item> 
           </el-col>
           <el-col :span="12">
-             <el-form-item label="职位" prop="job"><el-input v-model="form.job"></el-input></el-form-item>
+             <el-form-item label="职位" ><el-input v-model="modifyForm.jobName"></el-input></el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-             <el-form-item label="电话" prop="phone"><el-input v-model="form.phone"></el-input></el-form-item> 
+             <el-form-item label="电话" ><el-input v-model="modifyForm.employeePhone"></el-input></el-form-item> 
           </el-col>
           <el-col :span="12">
-             <el-form-item label="邮箱" prop="email"><el-input v-model="form.email"></el-input></el-form-item>
+             <el-form-item label="邮箱" ><el-input v-model="modifyForm.employeeEmail"></el-input></el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-             <el-form-item label="学历" prop="education"><el-input v-model="form.education" disabled></el-input></el-form-item> 
+             <el-form-item label="学历" ><el-input v-model="modifyForm.education" disabled></el-input></el-form-item> 
           </el-col>
           <el-col :span="12">
-             <el-form-item label="身份证号" prop="personID"><el-input v-model="form.personID" disabled></el-input></el-form-item>
+             <el-form-item label="身份证号"><el-input v-model="modifyForm.employeeIdcard" disabled></el-input></el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="居住地址" prop="address"><span>{{form.address}}</span></el-form-item>
-        <el-form-item>
-          <el-button class="btn" type="primary" @click="onSubmit(form)">保存</el-button>
+        <el-form-item label="居住地址">
+          <el-input v-model="modifyForm.employeeAddress"></el-input>
         </el-form-item>
+        <el-form-item>
+          <el-button class="btn" type="primary" @click="save">保存</el-button>
+        </el-form-item>
+      </el-form> -->
+
+      <el-form ref="modifyForm" :model="modifyForm"  label-width="100px">
+       
+        <el-row>
+          <el-col :span="12">
+             <el-form-item label="ID" ><el-input  v-model="modifyForm.sysuserId" disabled></el-input></el-form-item> 
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+             <el-form-item label="账号" ><el-input  v-model="modifyForm.sysuserAccount" disabled></el-input></el-form-item> 
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+             <el-form-item label="密码"><el-input v-model="modifyForm.sysuserPassword" disabled></el-input></el-form-item> 
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+             <el-form-item label="状态"><el-input v-model="modifyForm.sysuserStatus" disabled></el-input></el-form-item> 
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+             <el-form-item label="权限ID" ><el-input  v-model="modifyForm.roleId" disabled></el-input></el-form-item> 
+          </el-col>
+        </el-row>
+        
       </el-form>
+
     </el-card>
   </div>
 </template>
 
 <script>
+
+import { sysUserInfo } from '@/components/employee/api/login'
+
 export default {
     data(){
         return {
             // 表单数据
-            form:{}
+            modifyForm:{
+              sysuserId:'',
+              sysuserAccount:'',
+              sysuserPassword:'',
+              sysuserStatus:'',
+              roleName:'',
+              roleId:'',
+              createTime:'',
+              modifyTime:''
+            },
+            // rules: {
+            //    employeeName: [
+            //         { required: true, message: "请输入姓名", trigger: "blur" },
+            //    ]
+            // }
         }
-    },
-    methods:{
+    },created(){
+      this.getInfo();
+    },methods:{
+        getInfo(){
+            sysUserInfo(localStorage.getItem('info')).then((res)=>{
+              this.modifyForm = res.data.data
+            });
+        },
         // 保存修改
-        save(){
-
-        }
+        // save(){
+        //     console.log(this.modifyForm);
+        //     sysUserInfo(localStorage.getItem('info')).then((res)=>{
+        //       console.log(res);
+        //     });
+        // }
     }
 };
 </script>
