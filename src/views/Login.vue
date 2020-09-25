@@ -38,9 +38,6 @@
 import SIdentify from '../components/login/SIdentify.vue'
 import { login } from '@/components/employee/api/login'
 
-
-
-
 export default {
   name: "userLogin",
   components: { SIdentify },
@@ -82,7 +79,7 @@ export default {
     this.makeCode(this.identifyCodes, 4)
   },
   methods: {
-    
+
      // 重置验证码
     refreshCode () {
       this.identifyCode = ''
@@ -112,7 +109,7 @@ export default {
         //var salt = bcrypt.getSaltSync(12);
         var hash = bcrypt.hashSync("123456",12);
         //console.log(hash);
-        if (!valid){ return;}       
+        if (!valid){ return;}
          // 通过编程式导航跳转到后台主页，路由地址是/home
         login(this.loginForm).then((res)=>{
           //每个人,生成是不同的，不可以通过访问；
