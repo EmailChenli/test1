@@ -6,7 +6,7 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="clear()">
+          <el-input placeholder="请输入会议名称、会议室编号或账号" v-model="keyWord" clearable @clear="clear()">
             <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
         </el-col>
@@ -98,12 +98,10 @@
     },
     methods: {
       getNotApprovedList() {
-        axios.post('http://localhost:8080/meetingbooking/findByStatus', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/findByStatus/${this.queryInfo.page}/${this.queryInfo.rows}`, {
           status: 0
-        })
-          .then((response) => {
+
+        }).then((response) => {
             if (response.data.code == 400) {
               this.$message.error("查询失败：" + response.data.message)
             } else {
@@ -140,8 +138,8 @@
       },
       doSearch(){
         if (this.keyWord == ''){
-            this.$message.info("请输入账号进行搜索")
-            return
+          this.$message.info("请输入搜索条件")
+          return
         }else{
           this.queryInfo.page = 1
           this.queryInfo.rows = 5
@@ -149,11 +147,9 @@
         }
       },
       searchNotApproved() {
-        axios.post('http://localhost:8080/meetingbooking/findByUserNameAndStatus', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/searchNotApproved/${this.queryInfo.page}/${this.queryInfo.rows}`, {
           status: 0,
-          userName: this.keyWord
+          para: this.keyWord
         }).then((response) => {
             if (response.data.code == 400) {
               this.$message.error("查询失败：" + response.data.message)
@@ -180,9 +176,10 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消')
         }
-        axios.post('http://localhost:8080/meetingbooking/updateBookingStatus', {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus`, {
           bookingId: id,
-          status: 1
+          status: 1,
+          rejectReason: ''
         }).then((response) => {
           if (response.data.code == 400) {
             return this.$message.error("操作失败：" + response.data.message)
@@ -203,10 +200,10 @@
           this.$message("请填写拒绝理由")
           return
         }
-        axios.post('http://localhost:8080/meetingbooking/updateBookingStatus', {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus`, {
           bookingId: this.rejectForm.bookingId,
-          rejectReason: this.rejectForm.rejectReason,
-          status: 2
+          status: 2,
+          rejectReason: this.rejectForm.rejectReason
         }).then((response) => {
           if (response.data.code == 400) {
             this.$message.error("操作失败：" + response.data.message)

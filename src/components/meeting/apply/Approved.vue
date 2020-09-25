@@ -6,12 +6,12 @@
       </div>
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入账号" v-model="keyWord" clearable @clear="getApprovedList">
-            <el-button slot="append" icon="el-icon-search" @click="searchApproved()"></el-button>
+          <el-input placeholder="请输入会议名称、会议室编号或账号" v-model="keyWord" clearable @clear="getApprovedList">
+            <el-button slot="append" icon="el-icon-search" @click="doSearch()"></el-button>
           </el-input>
         </el-col>
         <el-col :span="1.5">
-          <el-button icon="el-icon-refresh" @click="getApprovedList()"></el-button>
+          <el-button icon="el-icon-refresh" @click="refreshApList()"></el-button>
         </el-col>
       </el-row>
 
@@ -108,10 +108,8 @@
     },
     methods: {
       getApprovedList(){
-        axios.post('http://localhost:8080/meetingbooking/findApproved', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
-        }).then((response) => {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/findApproved/${this.queryInfo.page}/${this.queryInfo.rows}`)
+          .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败："+ response.data.message)
             } else {
@@ -128,22 +126,39 @@
       },
       handleSizeChange(newSize){
         this.queryInfo.rows = newSize
-        this.getApprovedList()
+        if (this.keyWord == ''){
+          this.getApprovedList()
+        }else{
+          this.searchApproved()
+        }
       },
       handleCurrentChange(newPage){
         this.queryInfo.page = newPage
-        this.getApprovedList()
+        if (this.keyWord == ''){
+          this.getApprovedList()
+        }else{
+          this.searchApproved()
+        }
+      },
+      doSearch(){
+        if (this.keyWord == ''){
+          this.$message.info("请输入搜索条件")
+          return
+        }else{
+          this.queryInfo.page = 1
+          this.queryInfo.rows = 5
+          this.searchApproved()
+        }
       },
       searchApproved(){
-        axios.post('http://localhost:8080/meetingbooking/findApproved', {
-          page: this.queryInfo.page,
-          rows: this.queryInfo.rows,
-          userName: this.keyWord
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/searchApproved/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+          para: this.keyWord
+
         }).then((response) => {
           if (response.data.code == 400) {
             this.$message.error("查询失败：" + response.data.message)
           } else {
-            this.ApprovedList = response.data.data.list
+            this.approvedList = response.data.data.list
             this.total = response.data.data.count
           }
         }).catch((response) => {
@@ -164,16 +179,21 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消')
         }
-        axios.post('http://localhost:8080/meetingbooking/updateBookingStatus', {
+        axios.post(`http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus`, {
           bookingId: this.reapprovalForm.bookingId,
+          rejectReason: '',
           status: 1
         }).then((response) => {
           if (response.data.code == 400) {
             return this.$message.error("操作失败：" + response.data.message)
           }
           this.$message.success("审批成功")
-          this.getApprovedList()
           this.reapprovalDialogVisible = false
+          if (this.keyWord == ''){
+            this.getApprovedList()
+          }else{
+            this.searchApproved()
+          }
         }).catch((response) => {
           console.log(response)
           this.$message.error("操作失败")
@@ -184,7 +204,7 @@
           this.$message("请填写拒绝理由")
           return
         }
-        axios.post('http://localhost:8080/meetingbooking/updateBookingStatus', {
+        axios.post('http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus', {
           bookingId: this.reapprovalForm.bookingId,
           rejectReason: this.reapprovalForm.rejectReason,
           status: 2
@@ -194,12 +214,25 @@
           } else {
             this.$message.success("审批成功")
             this.reDialogVisible = false
-            this.getApprovedList()
             this.reapprovalDialogVisible = false
+            if (this.keyWord == ''){
+              this.getApprovedList()
+            }else{
+              this.searchApproved()
+            }
           }
         }).catch((response) => {
           console.log(response)
         })
+      },
+      refreshApList(){
+        this.queryInfo.page = 1
+        this.queryInfo.rows = 5
+        if (this.keyWord == ''){
+          this.getApprovedList()
+        }else{
+          this.searchApproved()
+        }
       }
 
     }

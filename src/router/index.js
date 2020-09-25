@@ -7,7 +7,7 @@ import Home from '../views/Home.vue'
 import Welcome from '../views/Welcome.vue'
 import Information from '../views/Information.vue'
 import Property from '../views/Property.vue'
-import Meetinng from '../views/Meeting.vue'
+import Meeting from '../views/Meeting.vue'
 import Order from '../views/Order.vue'
 import Network from '../views/Network.vue'
 import Setting from '@/views/Setting.vue'
@@ -62,12 +62,12 @@ const router = new VueRouter({
       {path:'/welcome',component:Welcome,meta: { requireAuth: true }},
       // 设置
       {
-        path: '/setting', 
+        path: '/setting',
         component: Setting,
         redirect: '/setting/personList',
         children:[
           {path:'/setting/personList',component:PersonList},
-          {path:'/setting/changePassword',component:ChangePassword},         
+          {path:'/setting/changePassword',component:ChangePassword},
         ]
       },
       // 信息管理
@@ -110,7 +110,7 @@ const router = new VueRouter({
       //会议室管理
       {
         path:'/meeting',
-        component:Meetinng,
+        component:Meeting,
         redirect: '/meeting/list',
         children:[
           {path:'/meeting/list',component:MeetingRooms},

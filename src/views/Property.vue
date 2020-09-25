@@ -7,7 +7,7 @@
       </div>
       <el-menu
         background-color="#333744"
-        style="text-algin:left"
+        style="text-align:left"
         text-color="#fff"
         active-text-color="#409EFF"
         unique-opened
@@ -65,49 +65,49 @@ export default {
         {
           path: "/property/propertyList",
           name: "资产列表",
-          icon: "el-icon-s-marketing",
+          icon: "el-icon-data-line",
         },
         {
           path: "/property/computer",
           name: "电脑管理",
-          icon: "el-icon-s-platform",
+          icon: "el-icon-monitor",
           children: [
             {
               path: "/property/computer/list",
               name: "电脑信息",
-              icon: "el-icon-menu",
+              icon: "el-icon-document",
             },
             {
               path: "/property/computer/rent",
               name: "发还管理",
-              icon: "el-icon-menu",
+              icon: "el-icon-s-promotion",
             },
             {
               path: "/property/computer/history",
               name: "历史记录",
-              icon: "el-icon-menu",
+              icon: "el-icon-time",
             },
           ],
         },
         {
           path: "/property/book",
           name: "图书管理",
-          icon: "el-icon-s-promotion",
+          icon: "el-icon-reading",
           children: [
             {
               path: "/property/book/list",
               name: "图书列表",
-              icon: "el-icon-menu",
+              icon: "el-icon-document",
             },
             {
               path: "/property/book/rent",
               name: "借用情况",
-              icon: "el-icon-menu",
+              icon: "el-icon-question",
             },
             {
               path: "/property/book/history",
               name: "历史记录",
-              icon: "el-icon-menu",
+              icon: "el-icon-time",
             },
           ],
         },
@@ -153,7 +153,7 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
-  padding: 0px;
+  padding: 0;
 }
 
 .toggle-button {
