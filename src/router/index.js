@@ -1,4 +1,6 @@
 import Vue from 'vue'
+
+
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
@@ -8,10 +10,10 @@ import Property from '../views/Property.vue'
 import Meetinng from '../views/Meeting.vue'
 import Order from '../views/Order.vue'
 import Network from '../views/Network.vue'
-import Setting from '../views/Setting.vue'
+import Setting from '@/views/Setting.vue'
 // 设置
-import PersonList from '../components/setting/PersonList.vue'
-import ChangePassword from '../components/setting/ChangePassword.vue'
+import PersonList from '@/components/setting/PersonList.vue'
+import ChangePassword from '@/components/setting/ChangePassword.vue'
 // 信息管理
 import Department from '../components/employee/components/Department'
 import Job from '../components/employee/components/Job'
@@ -48,7 +50,8 @@ import IP from '../components/network/IP.vue'
 
 Vue.use(VueRouter);
 
-const routes = [
+const router = new VueRouter({
+  routes:[
   {path: '/', redirect: '/login'},
   {path: '/login', component: Login},
   {
@@ -56,7 +59,7 @@ const routes = [
     component: Home,
     redirect: '/welcome',
     children:[
-      {path:'/welcome',component:Welcome},
+      {path:'/welcome',component:Welcome,meta: { requireAuth: true }},
       // 设置
       {
         path: '/setting', 
@@ -141,27 +144,26 @@ const routes = [
           {path:'/network/ip',component:IP}
         ]
       },
-    ]
+    ],
+    meta: { requireAuth: true }
   }
-];
+]
+})
 
-//创建路由
-const router = new VueRouter({
-  routes,
-  //路径不带#符号
-  mode: 'history'
-});
-//挂载路由导航守卫
-// router.beforeEach((to, from, next) => {
-//   // to 代表将要访问的路径
-//   // from 代表从哪个路径跳转而来
-//   // next 是一个函数，代表放行：1.next()直接放行 2.next('/login')强制跳转
-//   if (to.path === '/login') return next()
-//   //获取token
-//   const tokenStr = window.sessionStorage.getItem('token')
-//   if (!tokenStr) return next('/login')
-//   next()
-// })
 
-//暴露路由
-export default router;
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(res => res.meta.requireAuth)) {// 判断是否需要登录权限
+    if (localStorage.getItem('token') !== null && localStorage.getItem('token')) {// 判断是否登录token应该是随机数
+      next()
+    } else {// 没登录则跳转到登录界面
+      next({
+        path: '/',
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next()
+  }
+})
+export default router

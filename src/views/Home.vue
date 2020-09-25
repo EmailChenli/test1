@@ -89,12 +89,12 @@ export default {
   methods: {
     // 跳转至设置界面
     setting() {
-      console.log(111)
+      console.log("setting");
       this.$router.push("/setting");
     },
     // 退出登录
     logout() {
-      window.sessionStorage.clear();
+      localStorage.clear();
       this.$router.push("/login");
     },
     // 保存连接的激活状态

@@ -110,7 +110,7 @@
                   next-text="下一页"
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
-                  :current-page="QueryForm.currentPage"
+                  :current-page="QueryForm.page.currentPage"
                   :page-sizes="[15, 30, 50, 100]"
                   :page-size="15"
                   layout="total, sizes, prev, pager, next, jumper"
