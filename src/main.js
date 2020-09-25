@@ -4,9 +4,8 @@ import router from './router'
 import './plugins/element.js'
 import JsonExcel from 'vue-json-excel'
 import './assets/css/global.css'
-import service from "./components/employee/utils/request";
-// 导入全局样式表
 import axios from 'axios'
+// 导入全局样式表
 Vue.component('downloadExcel', JsonExcel)
 
 Vue.config.productionTip = false;
