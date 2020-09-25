@@ -1,7 +1,7 @@
 import request from '../utils/request'
 
 export function employeefindall(page){
-    return request({
+  return request({
         url: 'http://localhost:8003/sys/employee/findall',
         method: 'post',
         data:
@@ -42,7 +42,7 @@ export function employeefindlike(employee,page){
             {
                 employee,
                 page
-            }   
+            }
     })
 }
 
