@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function login(sysUser){
     return request({
-        url: 'http://localhost:8003/sys/login/sysuser',
+        url: '/sys/login/sysuser',
         method: 'post',
         data:
             sysUser
@@ -12,7 +12,7 @@ export function login(sysUser){
 
 export function sysUserInfo(sysUserName){
     return request({
-        url: 'http://localhost:8003/sys/login/sysUserInfo',
+        url: '/sys/login/sysUserInfo',
         method: 'post',
         data:
             sysUserName
@@ -21,7 +21,7 @@ export function sysUserInfo(sysUserName){
 
 export function changePassword(passwordUtil){
     return request({
-        url: 'http://localhost:8003/sys/login/changePassword',
+        url: '/sys/login/changePassword',
         method: 'post',
         data:
             passwordUtil

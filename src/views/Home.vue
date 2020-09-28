@@ -112,7 +112,7 @@ export default {
 }
 .el-main {
   background-color: #eaedf1;
-  padding: 0px;
+  padding: 0;
 }
 
 .logo {
@@ -124,7 +124,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding-left: 10px;
-  align-items: right;
+  text-align: right;
   color: #fff;
   font-size: 20px;
   > div {

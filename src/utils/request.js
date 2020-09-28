@@ -1,33 +1,46 @@
 import axios from "axios"
+import router from "@/router";
 
 // 资产管理
 export function requestAsset(config){
   // 创建axios实例
   const instance = axios.create({
-    //baseURL:"http://eastcom.ripple.asset:8002",
-    baseURL:"http://localhost:8002",
+    baseURL:"http://192.168.93.10:8080",
+    //baseURL:"http://localhost:8002",
     timeout:5000
   });
 
-  // request拦截器
+  // request拦截器，axios局部拦截器
   instance.interceptors.request.use(
     config => {
-      // config.headers.Authorization = window.sessionStorage.getItem('token')
-      //debugger
-      //console.log(config);
       console.log("进入拦截....");
-      // if (cookie.get('token')) {
-      //   console.log("请求头携带token..");
-      //   config.headers['token'] = cookie.get('token');
-      // }else{
-      //   console.log("token不存在！")
-      // }
+      //请求头添加token
       config.headers['token'] = localStorage.getItem("token");
       return config
     },
     err => {
       return Promise.reject(err);
     });
+
+  //response拦截器,axios局部响应拦截器
+  instance.interceptors.response.use(
+    response => {
+      //进入拦截
+      console.log("进入资产响应拦截。。。");
+      //拦截响应，做统一处理
+      if (response.data.code === "403") {
+        alert(response.data.message);
+        router.replace({
+          path: '/login'
+        });
+      }
+      return response;
+    },
+    //接口错误状态处理，也就是说无响应时的处理
+    error => {
+      return Promise.reject(error.response.status) // 返回接口返回的错误信息
+    });
+
   // 发送真正的网络请求
   return instance(config)
 }

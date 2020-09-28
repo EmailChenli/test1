@@ -51,7 +51,7 @@
     },
     methods: {
       getTimesList() {
-        axios.get(`http://localhost:8005/meetingroom/meetingrecord/findReserveTimes/${this.queryInfo.page}/${this.queryInfo.rows}`)
+        axios.get(`http://192.168.93.10:8080/meetingroom/meetingrecord/findReserveTimes/${this.queryInfo.page}/${this.queryInfo.rows}`)
           .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败")

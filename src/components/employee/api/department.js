@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function departmentfindall(page){
     return request({
-        url: 'http://localhost:8003/sys/department/findall',
+        url: '/sys/department/findall',
         method: 'post',
         data:
             page
@@ -11,21 +11,21 @@ export function departmentfindall(page){
 
 export function departmentfindbyid(departmentId){
     return request({
-        url: 'http://localhost:8003/sys/department/findbyid/'+departmentId,
+        url: '/sys/department/findbyid/'+departmentId,
         method: 'get'
     })
 }
 
 export function departmentdeletebyid(departmentId){
     return request({
-        url: 'http://localhost:8003/sys/department/delete/'+departmentId,
+        url: '/sys/department/delete/'+departmentId,
         method: 'get'
     })
 }
 
 export function departmentupdate(department){
     return request({
-        url: 'http://localhost:8003/sys/department/update',
+        url: '/sys/department/update',
         method: 'post',
         data:
             department
@@ -34,7 +34,7 @@ export function departmentupdate(department){
 
 export function departmentadd(department){
     return request({
-        url: 'http://localhost:8003/sys/department/add',
+        url: '/sys/department/add',
         method: 'post',
         data:
             department
@@ -43,7 +43,7 @@ export function departmentadd(department){
 
 export function departmentfindlike(department){
     return request({
-        url: 'http://localhost:8003/sys/department/findlike',
+        url: '/sys/department/findlike',
         method: 'post',
         data:
             department

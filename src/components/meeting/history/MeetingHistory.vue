@@ -100,7 +100,7 @@
     },
     methods: {
       getRecordList() {
-        axios.get(`http://localhost:8005/meetingroom/meetingrecord/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
+        axios.get(`http://192.168.93.10:8080/meetingroom/meetingrecord/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
           .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败："+response.data.message)
@@ -146,7 +146,7 @@
         }
       },
       searchRecord(){
-        axios.post(`http://localhost:8005/meetingroom/meetingrecord/searchRecord/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+        axios.post(`http://192.168.93.10:8080/meetingroom/meetingrecord/searchRecord/${this.queryInfo.page}/${this.queryInfo.rows}`, {
           para: this.keyWord,
 
         }).then((response) => {
@@ -171,7 +171,7 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消删除')
         }
-        axios.get(`http://localhost:8005/meetingroom/meetingrecord/deleteRecord/${recordId}`)
+        axios.get(`http://192.168.93.10:8080/meetingroom/meetingrecord/deleteRecord/${recordId}`)
           .then((response) =>{
           if(response.data.code == 400){
             return this.$message.error("删除失败：" + response.data.message)

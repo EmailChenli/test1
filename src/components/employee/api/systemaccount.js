@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function sysuserfindall(page){
     return request({
-        url: 'http://localhost:8003/sys/sysuser/findall',
+        url: '/sys/sysuser/findall',
         method: 'post',
         data:
             page
@@ -12,7 +12,7 @@ export function sysuserfindall(page){
 
 export function sysuserupdate(sysUser){
     return request({
-        url: 'http://localhost:8003/sys/sysuser/update',
+        url: '/sys/sysuser/update',
         method: 'post',
         data:
             sysUser
@@ -22,7 +22,7 @@ export function sysuserupdate(sysUser){
 
 export function sysuserfindlike(sysUser,page){
     return request({
-        url: 'http://localhost:8003/sys/sysuser/findlike',
+        url: '/sys/sysuser/findlike',
         method: 'post',
         data:
             {

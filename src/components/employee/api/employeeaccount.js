@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function accountfindall(page){
     return request({
-        url: 'http://localhost:8003/sys/account/findall',
+        url: '/sys/account/findall',
         method: 'post',
         data:
             page
@@ -11,21 +11,21 @@ export function accountfindall(page){
 
 export function accountfindbyid(accountId){
     return request({
-        url: 'http://localhost:8003/sys/account/findbyid/'+accountId,
+        url: '/sys/account/findbyid/'+accountId,
         method: 'get'
     })
 }
 
 export function accountdelete(accountId){
     return request({
-        url: 'http://localhost:8003/sys/account/delete/'+accountId,
+        url: '/sys/account/delete/'+accountId,
         method: 'get'
     })
 }
 
 export function accountupdate(account){
     return request({
-        url: 'http://localhost:8003/sys/account/update',
+        url: '/sys/account/update',
         method: 'post',
         data:
             account
@@ -34,7 +34,7 @@ export function accountupdate(account){
 
 export function accountadd(account){
     return request({
-        url: 'http://localhost:8003/sys/account/add',
+        url: '/sys/account/add',
         method: 'post',
         data:
             account
@@ -43,7 +43,7 @@ export function accountadd(account){
 
 export function accountfindlike(account){
     return request({
-        url: 'http://localhost:8003/sys/account/findlike',
+        url: '/sys/account/findlike',
         method: 'post',
         data:
             account

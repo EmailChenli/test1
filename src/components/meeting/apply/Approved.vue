@@ -108,7 +108,7 @@
     },
     methods: {
       getApprovedList(){
-        axios.post(`http://localhost:8005/meetingroom/meetingbooking/findApproved/${this.queryInfo.page}/${this.queryInfo.rows}`)
+        axios.post(`http://192.168.93.10:8080/meetingroom/meetingbooking/findApproved/${this.queryInfo.page}/${this.queryInfo.rows}`)
           .then((response) => {
             if (response.data.code == 400) {
               this.$message.error("获取数据失败："+ response.data.message)
@@ -151,7 +151,7 @@
         }
       },
       searchApproved(){
-        axios.post(`http://localhost:8005/meetingroom/meetingbooking/searchApproved/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+        axios.post(`http://192.168.93.10:8080/meetingroom/meetingbooking/searchApproved/${this.queryInfo.page}/${this.queryInfo.rows}`, {
           para: this.keyWord
 
         }).then((response) => {
@@ -179,7 +179,7 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消')
         }
-        axios.post(`http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus`, {
+        axios.post(`http://192.168.93.10:8080/meetingroom/meetingbooking/updateBookingStatus`, {
           bookingId: this.reapprovalForm.bookingId,
           rejectReason: '',
           status: 1
@@ -204,7 +204,7 @@
           this.$message("请填写拒绝理由")
           return
         }
-        axios.post('http://localhost:8005/meetingroom/meetingbooking/updateBookingStatus', {
+        axios.post('http://192.168.93.10:8080/meetingroom/meetingbooking/updateBookingStatus', {
           bookingId: this.reapprovalForm.bookingId,
           rejectReason: this.reapprovalForm.rejectReason,
           status: 2

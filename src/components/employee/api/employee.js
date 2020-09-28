@@ -2,7 +2,7 @@ import request from '../utils/request'
 
 export function employeefindall(page){
   return request({
-        url: 'http://localhost:8003/sys/employee/findall',
+        url: '/sys/employee/findall',
         method: 'post',
         data:
             page
@@ -11,14 +11,14 @@ export function employeefindall(page){
 
 export function employeefindbyid(employeeId){
     return request({
-        url: 'http://localhost:8003/sys/employee/findbyid/'+employeeId,
+        url: '/sys/employee/findbyid/'+employeeId,
         method: 'get'
     })
 }
 
 export function employeeupdate(employee){
     return request({
-        url: 'http://localhost:8003/sys/employee/update',
+        url: '/sys/employee/update',
         method: 'post',
         data:
             employee
@@ -27,7 +27,7 @@ export function employeeupdate(employee){
 
 export function employeeadd(employee){
     return request({
-        url: 'http://localhost:8003/sys/employee/add',
+        url: '/sys/employee/add',
         method: 'post',
         data:
             employee
@@ -36,7 +36,7 @@ export function employeeadd(employee){
 
 export function employeefindlike(employee,page){
     return request({
-        url: 'http://localhost:8003/sys/employee/findlike',
+        url: '/sys/employee/findlike',
         method: 'post',
         data:
             {
@@ -48,7 +48,7 @@ export function employeefindlike(employee,page){
 
 export function employeedelete(employeeId){
     return request({
-        url: 'http://localhost:8003/sys/employee/delete/'+employeeId,
+        url: '/sys/employee/delete/'+employeeId,
         method: 'get'
     })
 }

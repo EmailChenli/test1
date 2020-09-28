@@ -159,7 +159,7 @@
     },
     methods: {
       getRoomList () {
-        axios.get(`http://localhost:8005/meetingroom/room/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
+        axios.get(`http://192.168.93.10:8080/meetingroom/room/findAll/${this.queryInfo.page}/${this.queryInfo.rows}`)
           .then((response) => {
             if(response.data.code == 400){
               this.$message.error("获取数据失败："+response.data.message)
@@ -200,7 +200,7 @@
         }
       },
       searchRoom () {
-        axios.post(`http://localhost:8005/meetingroom/room/searchRoom/${this.queryInfo.page}/${this.queryInfo.rows}`, {
+        axios.post(`http://192.168.93.10:8080/meetingroom/room/searchRoom/${this.queryInfo.page}/${this.queryInfo.rows}`, {
             para: this.keyWord
 
           }).then((response) => {
@@ -223,7 +223,7 @@
       addRoom () {
         this.$refs.addFormRef.validate(async valid => {
           if (!valid) return
-          axios.post(`http://localhost:8005/meetingroom/room/saveRoom`, {
+          axios.post(`http://192.168.93.10:8080/meetingroom/room/saveRoom`, {
             roomId: this.addForm.roomId,
             roomName: this.addForm.roomName,
             roomSize: this.addForm.roomSize,
@@ -252,7 +252,7 @@
       eidtRoom () {
         this.$refs.editFormRef.validate(async valid => {
           if (!valid) return
-          axios.post(`http://localhost:8005/meetingroom/room/updateRoom`, {
+          axios.post(`http://192.168.93.10:8080/meetingroom/room/updateRoom`, {
             roomId: this.editForm.roomId,
             roomName: this.editForm.roomName,
             roomSize: this.editForm.roomSize,
@@ -282,7 +282,7 @@
         if (confirmResult !== 'confirm') {
           return this.$message.info('已取消')
         }
-        axios.get(`http://localhost:8005/meetingroom/room/deleteRoom/${roomId}`).then((response) =>{
+        axios.get(`http://192.168.93.10:8080/meetingroom/room/deleteRoom/${roomId}`).then((response) =>{
           if(response.data.code == 400){
             return this.$message.error("删除失败：" + response.data.message)
           }
