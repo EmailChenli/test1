@@ -52,7 +52,8 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   //去掉路径上的#
-  mode: 'history',
+  //history去掉#
+  mode: 'hash',
   //固定访问路径
   // base: '/rippleAdmin/',
   routes:[
